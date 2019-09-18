@@ -1,0 +1,46 @@
+//-- Tasks Dev --//
+-------------------
+// Mechanics
+-------------
+- Jump pole to pole (auto)
+- Throwing stars
+	-> obstacles falling down
+- Swinging (grappling hook)
+- A.I. enemy -> rand () % 10
+- missed hits
+- Jump counter
+- Challenges
+
+// U.I. && HUD
+---------------
+- Menu
+   -> Play 
+	-> Ninja sequence
+	-> Game starts
+
+   -> Options
+	-> Music volume
+	-> Sfx volume
+
+   -> Extra
+	-> Story
+	-> Information
+	-> Credits (dev info)
+   -> Exit
+	are you sure that you
+	want to quit
+	-> yes
+	-> no
+
+- Challenges button
+
+
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
