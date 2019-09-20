@@ -19,6 +19,10 @@ public class PoleManager : MonoBehaviour
     [SerializeField]
     private GameObject _newPole = null;
 
+    [SerializeField]
+    private List<GameObject> _polesOnScreen = null;
+
+
     /*Function Awake checks if a gameobject reference was given to this script. If not then this will result in a crash*/
     private void Awake()
     {
@@ -53,5 +57,23 @@ public class PoleManager : MonoBehaviour
         _newPole = Instantiate(_poleReference);
         _newPole.transform.position = transform.position + new Vector3(0.0f, Random.Range(_height, -_height), 0.0f);
         Destroy(_newPole, _destroyTime);
+        _polesOnScreen.Add(_newPole);
     }
+
+    /*Functions below are used for calculating the path of the jump*/
+    public GameObject GetCurrentPole()
+    {
+        return _polesOnScreen[0];
+    }
+
+    public GameObject GetNexPole()
+    {
+        return _polesOnScreen[1];
+    }
+
+    public void RemoveLastPole()
+    {
+        _polesOnScreen.Remove(_polesOnScreen[0]);
+    }
+    /*--------------------------------------------------------------*/
 }
