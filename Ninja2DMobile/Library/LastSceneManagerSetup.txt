@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Cem/UI/Menu/Scene/TestMenu.unity
+- path: Assets/Scenes/Landscape.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
