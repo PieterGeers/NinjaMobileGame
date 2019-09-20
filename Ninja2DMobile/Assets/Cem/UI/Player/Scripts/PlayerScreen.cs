@@ -9,6 +9,11 @@ public class PlayerScreen : MonoBehaviour
     [SerializeField] private GameObject _character;
     private uint _score = 0;
 
+    void Start()
+    {
+    
+    }
+
     void Update()
     {
         _score = _character.GetComponent<Character_Controller>().GetScore();
