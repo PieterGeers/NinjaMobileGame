@@ -36,8 +36,8 @@ public class Character_Controller : MonoBehaviour
                 FindObjectOfType<GameState>().GetComponent<GameState>().SetStart(true);
                 _start = true;
             }
-            if (_prevPole != null)
-                Debug.Log(GetDistanceToLastPole());
+            ++_score;
+            Debug.Log(_score);
             CalculateQuadraticParam();
         }
 
@@ -80,6 +80,11 @@ public class Character_Controller : MonoBehaviour
     private float GetDistanceToLastPole()
     {
         return transform.position.x - _prevPole.transform.position.x;
+    }
+
+    public uint GetScore()
+    {
+        return _score;
     }
 
 }
