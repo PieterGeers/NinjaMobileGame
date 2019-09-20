@@ -11,9 +11,12 @@ public class Character_Controller : MonoBehaviour
     [SerializeField]
     private float _height = 7.0f;
     [SerializeField]
-    private float _verticalOffset = 2.5f;
+    private float _verticalOffset = 3.0f;
+    [SerializeField]
+    private float _horizontalOffset = -6.0f;
 
     private bool _start = false;
+    private uint _score = 0;
 
     [SerializeField]
     private GameObject _prevPole = null;
@@ -33,6 +36,8 @@ public class Character_Controller : MonoBehaviour
                 FindObjectOfType<GameState>().GetComponent<GameState>().SetStart(true);
                 _start = true;
             }
+            if (_prevPole != null)
+                Debug.Log(GetDistanceToLastPole());
             CalculateQuadraticParam();
         }
 
@@ -42,10 +47,13 @@ public class Character_Controller : MonoBehaviour
     {
         if (_start)
         {
-            float x = GetDistanceToLastPole() - 6.0f;
-            float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
-            transform.position = new Vector3(transform.position.x, height, transform.position.z);
-            Debug.Log("x = " + x + "     height = " + height);
+            float x = GetDistanceToLastPole();
+            if (x <= 5.0f)
+            {
+                x += _horizontalOffset;
+                float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
+                transform.position = new Vector3(transform.position.x, height, transform.position.z);
+            }
         }
     }
 
@@ -71,7 +79,7 @@ public class Character_Controller : MonoBehaviour
 
     private float GetDistanceToLastPole()
     {
-        return Mathf.Abs(transform.position.x - _prevPole.transform.position.x);
+        return transform.position.x - _prevPole.transform.position.x;
     }
 
 }
