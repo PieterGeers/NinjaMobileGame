@@ -76,4 +76,6 @@ public class PoleManager : MonoBehaviour
         _polesOnScreen.Remove(_polesOnScreen[0]);
     }
     /*--------------------------------------------------------------*/
+
+
 }

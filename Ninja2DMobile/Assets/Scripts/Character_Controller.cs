@@ -15,6 +15,9 @@ public class Character_Controller : MonoBehaviour
 
     private bool _start = false;
 
+    [SerializeField]
+    private GameObject _prevPole = null;
+
     private void Awake()
     {
         if (_poleManager == null)
@@ -37,13 +40,21 @@ public class Character_Controller : MonoBehaviour
 
     private void Update()
     {
-        
+        if (_start)
+        {
+            float x = GetDistanceToLastPole() - 6.0f;
+            float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
+            transform.position = new Vector3(transform.position.x, height, transform.position.z);
+            Debug.Log("x = " + x + "     height = " + height);
+        }
     }
 
 
     private void CalculateQuadraticParam()
     {
-        Vector2 current = new Vector2(_poleManager.GetCurrentPole().transform.position.x, _poleManager.GetCurrentPole().transform.position.y + _verticalOffset);
+        _prevPole = _poleManager.GetCurrentPole();
+               
+        Vector2 current = new Vector2(_prevPole.transform.position.x, _prevPole.transform.position.y + _verticalOffset);
         Vector2 next = new Vector2(_poleManager.GetNexPole().transform.position.x, _poleManager.GetNexPole().transform.position.y + _verticalOffset);
         Vector2 mid = new Vector2(current.x + (next.x - current.x) / 2.0f, _height);
 
@@ -57,4 +68,10 @@ public class Character_Controller : MonoBehaviour
         Debug.Log(_quadraticParam);
         _poleManager.RemoveLastPole();
     }
+
+    private float GetDistanceToLastPole()
+    {
+        return Mathf.Abs(transform.position.x - _prevPole.transform.position.x);
+    }
+
 }

@@ -469,8 +469,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _poleManager: {fileID: 1702010467}
   _quadraticParam: {x: 0, y: 0, z: 0}
-  _height: 7
+  _height: 3.5
   _verticalOffset: 2.5
+  _prevPole: {fileID: 0}
 --- !u!1 &1702010466
 GameObject:
   m_ObjectHideFlags: 0
