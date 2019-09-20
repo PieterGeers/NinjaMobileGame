@@ -5,13 +5,17 @@ using UnityEngine.UI;
 public class PlayerScreen : MonoBehaviour
 {
 
-    [SerializeField] private Text _scorePoints;
-    [SerializeField] private GameObject _character;
+    [SerializeField]
+    private Text _scorePoints = null;
+    [SerializeField]
+    private GameObject _character = null;
+
     private uint _score = 0;
 
-    void Start()
+    private void Awake()
     {
-    
+        if (_character == null)
+            throw new System.Exception("_character = NULL");
     }
 
     void Update()
