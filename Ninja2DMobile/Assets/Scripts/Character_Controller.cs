@@ -16,6 +16,7 @@ public class Character_Controller : MonoBehaviour
     private float _horizontalOffset = -6.0f;
 
     private bool _start = false;
+    [SerializeField]
     private uint _score = 0;
 
     [SerializeField]
