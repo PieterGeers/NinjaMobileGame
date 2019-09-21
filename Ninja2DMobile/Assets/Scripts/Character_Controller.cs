@@ -38,7 +38,6 @@ public class Character_Controller : MonoBehaviour
                 _start = true;
             }
             ++_score;
-            Debug.Log(_score);
             CalculateQuadraticParam();
         }
 
@@ -74,7 +73,6 @@ public class Character_Controller : MonoBehaviour
 
         _quadraticParam.z = current.y - _quadraticParam.x * Mathf.Pow(current.x, 2) - _quadraticParam.y * current.x;
 
-        Debug.Log(_quadraticParam);
         _poleManager.RemoveLastPole();
     }
 
