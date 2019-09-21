@@ -22,13 +22,4 @@ public class GameState : MonoBehaviour
     {
         return _start;
     }
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _start = true;
-        }
-    }
 }

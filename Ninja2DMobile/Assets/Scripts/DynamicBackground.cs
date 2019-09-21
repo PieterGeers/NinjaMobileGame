@@ -29,6 +29,7 @@ public class DynamicBackground : MonoBehaviour
 
     private Camera _mainCam = null;
 
+    /*Void Awake checks if the parameters are set*/
     private void Awake()
     {
         if (_layer1 == null)
@@ -43,11 +44,13 @@ public class DynamicBackground : MonoBehaviour
             throw new System.Exception("_gameState = NULL");
     }
 
+    /*Function Start sets the main camera in a var*/
     private void Start()
     {
         _mainCam = Camera.main;
     }
 
+    /*Function Update translates the different layers in the correct direction*/
     private void Update()
     {
         if (_gameState.Start())
@@ -58,8 +61,8 @@ public class DynamicBackground : MonoBehaviour
             Move(_layer4, _modifier4);
         }
     }
-
-
+    
+    /*Function Move translates the different layers with the appropriate speed and makes sure the layers are infinite*/
     private void Move(List<GameObject> layer, float modifier)
     {
         foreach (var l in layer)

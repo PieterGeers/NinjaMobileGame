@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pole : MonoBehaviour
+public class MoveObject : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 0.5f;
     private GameState _gameState = null;
 
+    /*Start check if certain parameters are set*/
     private void Start()
     {
         _gameState = FindObjectOfType<GameState>().GetComponent<GameState>();
@@ -15,6 +16,7 @@ public class Pole : MonoBehaviour
             throw new System.Exception("_gameState = NULL");
     }
 
+    /*Update translates the object in the correct direction*/
     void Update()
     {
         if (_gameState.Start())

@@ -65,9 +65,11 @@
     <Compile Include="Assets\Cem\UI\Player\Scripts\PlayerScreen.cs" />
     <Compile Include="Assets\Scripts\Character_Controller.cs" />
     <Compile Include="Assets\Scripts\DynamicBackground.cs" />
+    <Compile Include="Assets\Scripts\ForegroundSpawner.cs" />
     <Compile Include="Assets\Scripts\GameState.cs" />
-    <Compile Include="Assets\Scripts\Pole.cs" />
+    <Compile Include="Assets\Scripts\MoveObject.cs" />
     <Compile Include="Assets\Scripts\PoleManager.cs" />
+    <Compile Include="Assets\Scripts\Throwable.cs" />
     <None Include="Assets\GameArt\empty.txt" />
     <None Include="Assets\Audio\empty.txt" />
     <Reference Include="Unity.Timeline.Editor">

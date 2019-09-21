@@ -146,5 +146,7 @@ MonoBehaviour:
   _height: 3
   _verticalOffset: 3
   _horizontalOffset: -6
-  _score: 0
   _prevPole: {fileID: 0}
+  _minSwipeDistance: 75
+  _shurikan: {fileID: 5512512163095687918, guid: 4e160161d23171e419c6e910e54d6086,
+    type: 3}
