@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8671624984404820742}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: 0}
+  m_LocalPosition: {x: 0, y: -4.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,15 +44,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _foreground:
-  - {fileID: 7482846433802780861, guid: 3718eceb0c8287a4f8e5c1a86c8f2de9, type: 3}
-  - {fileID: 2630941707618188379, guid: 7f76b9494f116a34f9ba85114a5b074d, type: 3}
-  - {fileID: 3845209642764382326, guid: c36f7e9a77e975f40872da2220bcc545, type: 3}
-  - {fileID: 4540825428155545160, guid: c24eba76736802e408814c165da9cf81, type: 3}
+  - {fileID: 8370086301844318067, guid: 63697535b72289146af43cbe96340325, type: 3}
+  - {fileID: 4859073901360910300, guid: f64e6f4a840b1134e90d301617089d14, type: 3}
+  - {fileID: 8117052094089620568, guid: aa7a9f1eb69ecc543924ea7cde449093, type: 3}
   _minMaxScale: {x: 0.35, y: 0.45}
-  _minMaxDistance: {x: 3, y: 7}
+  _minMaxDistance: {x: 7, y: 15}
   _height: 0.5
   _startPositionX: -8
-  _endPositionX: 15
-  _initAmountOfObject: 3
+  _endPositionX: 20
+  _initAmountOfObject: 2
   _destroyTime: 15
   _newObject: {fileID: 0}
