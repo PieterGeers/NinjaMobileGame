@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\GameState.cs" />
     <Compile Include="Assets\Scripts\MoveObject.cs" />
     <Compile Include="Assets\Scripts\PoleManager.cs" />
+    <Compile Include="Assets\Scripts\Rope.cs" />
     <Compile Include="Assets\Scripts\Throwable.cs" />
     <None Include="Assets\GameArt\empty.txt" />
     <None Include="Assets\Audio\empty.txt" />
