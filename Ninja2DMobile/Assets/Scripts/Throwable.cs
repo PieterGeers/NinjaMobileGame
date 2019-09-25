@@ -50,4 +50,12 @@ public class Throwable : MonoBehaviour
     {
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
     }
+
+    //private void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        DeleteShurikan();
+    //    }
+    //}
 }
