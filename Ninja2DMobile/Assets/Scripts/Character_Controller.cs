@@ -14,6 +14,15 @@ public class Character_Controller : MonoBehaviour
     private float _verticalOffset = 3.0f;
     [SerializeField]
     private float _horizontalOffset = -6.0f;
+    [SerializeField]
+    private float _shurikanOffsetMultiplier = 2.0f;
+
+    //*******************************************
+    //FOR TESTING ONLY
+    [SerializeField]
+    private GameObject _canvas = null;
+    //*******************************************
+
 
     private bool _start = false;
     private uint _score = 0;
@@ -51,7 +60,11 @@ public class Character_Controller : MonoBehaviour
             ++_score;
             CalculateQuadraticParam();
         }
-
+        else if (collision.gameObject.tag == "Dead")
+        {
+            Time.timeScale = 0.0f;
+            _canvas.SetActive(true);
+        }
     }
 
     /*Function Update does the Input and the automatic movement of the character*/
@@ -123,9 +136,9 @@ public class Character_Controller : MonoBehaviour
     /*Function ThrowShurikan spawns in a shurikan and sets the correct direction*/
     private void ThrowShurikan()
     {
-        Vector3 throwDirection = new Vector3(_releasePosition.x - _pressPosition.x, _releasePosition.y - _pressPosition.y, 0).normalized;
+        Vector2 throwDirection = new Vector2(_releasePosition.x - _pressPosition.x, _releasePosition.y - _pressPosition.y).normalized;
         GameObject shurikan = Instantiate(_shurikan);
-        shurikan.transform.position = transform.position;
+        shurikan.transform.position = transform.position + new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMultiplier;
         shurikan.GetComponent<Throwable>().SetDirection(throwDirection);
     }
 

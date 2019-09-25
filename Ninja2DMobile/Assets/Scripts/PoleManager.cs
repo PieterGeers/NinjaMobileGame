@@ -15,10 +15,13 @@ public class PoleManager : MonoBehaviour
     [SerializeField]
     private uint _destroyTime = 15;
     [SerializeField]
+    private Vector2 _chanceForDestroyable = new Vector2(0, 10);
+    [SerializeField]
     private GameObject _poleReference = null;
     [SerializeField]
-    private GameObject _newPole = null;
+    private GameObject _destroyablePoleReference = null;
 
+    private GameObject _newPole = null;
     [SerializeField]
     private List<GameObject> _polesOnScreen = null;
 
@@ -28,6 +31,8 @@ public class PoleManager : MonoBehaviour
     {
         if (_poleReference == null)
             throw new System.Exception("_poleReference = NULL");
+        if (_destroyablePoleReference == null)
+            throw new System.Exception("_destroyablePoleReference = NULL"); 
     }
 
     /*Function Start creates the initial random level and moves the "Spawner" object to the correct location indicated by the parameters in the editor*/
@@ -48,6 +53,7 @@ public class PoleManager : MonoBehaviour
         if ((transform.position.x - _newPole.transform.position.x) >= _maxDistance)
         {
             SpawnPole();
+            SpawnDestroyablePole();
         }
     }
 
@@ -59,6 +65,17 @@ public class PoleManager : MonoBehaviour
         Destroy(_newPole, _destroyTime);
         _polesOnScreen.Add(_newPole);
     }
+
+    private void SpawnDestroyablePole()
+    {
+        int chance = Random.Range(0, 100);
+        if (chance >= _chanceForDestroyable.x && chance < _chanceForDestroyable.y)
+        {
+            GameObject newPole = Instantiate(_destroyablePoleReference, transform);
+            newPole.transform.position = new Vector3(transform.position.x, 5.5f, transform.position.z);
+        }
+    }
+
 
     /*Functions below are used for calculating the path of the jump*/
     public GameObject GetCurrentPole()

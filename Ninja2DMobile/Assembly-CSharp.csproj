@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\Cem\UI\Player\Scripts\PlayerScreen.cs" />
     <Compile Include="Assets\Scripts\Character_Controller.cs" />
+    <Compile Include="Assets\Scripts\Destroyable.cs" />
     <Compile Include="Assets\Scripts\DynamicBackground.cs" />
     <Compile Include="Assets\Scripts\ForegroundSpawner.cs" />
     <Compile Include="Assets\Scripts\GameState.cs" />

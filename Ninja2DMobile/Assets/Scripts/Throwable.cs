@@ -4,32 +4,50 @@ using UnityEngine;
 
 public class Throwable : MonoBehaviour
 {
-    private Vector3 _direction = Vector3.zero;
-    private bool _directionSet = false;
+    private Vector2 _direction = Vector2.zero;
+    private Rigidbody2D _rb = null;
     [SerializeField]
     private float _speed = 5.0f;
     [SerializeField]
     private float _timeToDestroy = 10.0f;
-    private float _timer = 0.0f;
 
-    /*Function SetDirection sets the travel direction and starts the movement of the shurikan*/
-    public void SetDirection(Vector3 direction)
+    private void Awake()
     {
-        _direction = direction;
-        _directionSet = true;
+        _rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    /*Function Update translates the shurikan in the correct direction*/
-    private void Update()
+    /*Function SetDirection sets the travel direction and starts the movement of the shurikan*/
+    public void SetDirection(Vector2 direction)
     {
-        if (_directionSet)
+        _direction = direction;
+        _rb.AddForce(direction * _speed);
+        Destroy(gameObject, _timeToDestroy);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "DestroyablePole")
         {
-            transform.position += _direction * _speed * Time.deltaTime;
-            _timer += Time.deltaTime;
-            if (_timer >= _timeToDestroy)
+            Destroy(collision.gameObject);
+            Destroy(collision.transform.parent.gameObject, 2f);
+            for (int i = 0; i < collision.transform.parent.childCount; ++i)
             {
-                Destroy(gameObject);
+                BoxCollider2D bc = collision.transform.parent.GetChild(i).GetComponent<BoxCollider2D>();
+                if (bc != null)
+                    bc.enabled = false;
             }
+
+            gameObject.GetComponent<CircleCollider2D>().enabled = false;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        gameObject.GetComponent<CircleCollider2D>().enabled = false;
+    }
+
+    private void EnableCollider()
+    {
+        gameObject.GetComponent<CircleCollider2D>().enabled = true;
     }
 }
