@@ -462,6 +462,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 9135882392173030611, guid: c1ccb292b3c40d44a81e68f86a5332c7,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 4752453822364411872, guid: c1ccb292b3c40d44a81e68f86a5332c7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -792,6 +797,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Distance
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ConnectedRigidBody
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_MaxDistanceOnly
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_EnableCollision
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_AutoConfigureConnectedAnchor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ConnectedAnchor.x
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ConnectedAnchor.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_AutoConfigureDistance
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4408186290193548927, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
         type: 3}
       propertyPath: m_Name
@@ -859,15 +896,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4408186290193548916, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
         type: 3}
-      propertyPath: _poleManager
-      value: 
-      objectReference: {fileID: 1702010467}
-    - target: {fileID: 4408186290193548916, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
-        type: 3}
       propertyPath: _canvas
       value: 
       objectReference: {fileID: 1999562115}
-    m_RemovedComponents: []
+    - target: {fileID: 4408186290193548916, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
+        type: 3}
+      propertyPath: _poleManager
+      value: 
+      objectReference: {fileID: 1702010467}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 0873d56d82ad44e47a88ef5d8fc5372d, type: 3}
 --- !u!1001 &1691433986
 PrefabInstance:
@@ -884,7 +922,7 @@ PrefabInstance:
     - target: {fileID: 7867571841505290686, guid: bf243b7e333415845860add183f05e41,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5509896491199874225, guid: bf243b7e333415845860add183f05e41,
         type: 3}

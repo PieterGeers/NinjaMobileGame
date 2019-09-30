@@ -6,8 +6,8 @@ TagManager:
   tags:
   - DefaultPole
   - DestroyablePole
-  - SwingingPole
   - Dead
+  - GrapplingPole
   layers:
   - Default
   - TransparentFX

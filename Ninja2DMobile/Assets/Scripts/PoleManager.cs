@@ -17,14 +17,17 @@ public class PoleManager : MonoBehaviour
     [SerializeField]
     private Vector2 _chanceForDestroyable = new Vector2(0, 10);
     [SerializeField]
+    private Vector2 _chanceForGrappling = new Vector2(90, 100);
+    [SerializeField]
     private GameObject _poleReference = null;
     [SerializeField]
     private GameObject _destroyablePoleReference = null;
+    [SerializeField]
+    private GameObject _grapplingPoleReference = null;
 
     private GameObject _newPole = null;
     [SerializeField]
     private List<GameObject> _polesOnScreen = null;
-
 
     /*Function Awake checks if a gameobject reference was given to this script. If not then this will result in a crash*/
     private void Awake()
@@ -32,7 +35,9 @@ public class PoleManager : MonoBehaviour
         if (_poleReference == null)
             throw new System.Exception("_poleReference = NULL");
         if (_destroyablePoleReference == null)
-            throw new System.Exception("_destroyablePoleReference = NULL"); 
+            throw new System.Exception("_destroyablePoleReference = NULL");
+        if (_grapplingPoleReference == null)
+            throw new System.Exception("_grapplingPoleReference = NULL");
     }
 
     /*Function Start creates the initial random level and moves the "Spawner" object to the correct location indicated by the parameters in the editor*/
@@ -52,8 +57,17 @@ public class PoleManager : MonoBehaviour
     {
         if ((transform.position.x - _newPole.transform.position.x) >= _maxDistance)
         {
-            SpawnPole();
-            SpawnDestroyablePole();
+            int chance = Random.Range(0, 100);
+            if (_newPole.tag == "GrapplingPole")
+            {
+                SpawnPole();
+            }
+            else
+            {
+                SpawnPole();
+                SpawnDestroyablePole(chance);
+                SpawnGrapplingPole(chance);
+            }
         }
     }
 
@@ -66,9 +80,8 @@ public class PoleManager : MonoBehaviour
         _polesOnScreen.Add(_newPole);
     }
 
-    private void SpawnDestroyablePole()
+    private void SpawnDestroyablePole(int chance)
     {
-        int chance = Random.Range(0, 100);
         if (chance >= _chanceForDestroyable.x && chance < _chanceForDestroyable.y)
         {
             GameObject newPole = Instantiate(_destroyablePoleReference, transform);
@@ -76,6 +89,18 @@ public class PoleManager : MonoBehaviour
         }
     }
 
+    private void SpawnGrapplingPole(int chance)
+    {
+        if (chance >= _chanceForGrappling.x && chance < _chanceForGrappling.y)
+        {
+            _polesOnScreen.Remove(_newPole);
+            Destroy(_newPole);
+            _newPole = Instantiate(_grapplingPoleReference);
+            _newPole.transform.position = new Vector3(transform.position.x, 5f, transform.position.z);
+            Destroy(_newPole, _destroyTime);
+            _polesOnScreen.Add(_newPole);
+        }
+    }
 
     /*Functions below are used for calculating the path of the jump*/
     public GameObject GetCurrentPole()
@@ -91,6 +116,11 @@ public class PoleManager : MonoBehaviour
     public void RemoveLastPole()
     {
         _polesOnScreen.Remove(_polesOnScreen[0]);
+    }
+
+    public float GetMaxDistance()
+    {
+        return _maxDistance;
     }
     /*--------------------------------------------------------------*/
 

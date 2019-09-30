@@ -9,13 +9,25 @@ public class Character_Controller : MonoBehaviour
     [SerializeField]
     private Vector3 _quadraticParam = Vector3.zero;
     [SerializeField]
+    private Vector2 _lineParam1 = Vector2.zero;
+    [SerializeField]
+    private Vector2 _lineParam2 = Vector2.zero;
+    [SerializeField]
     private float _height = 7.0f;
+    [SerializeField]
+    private float _grapplingJumpHeight = 1.5f;
+    [SerializeField]
+    private float _grapplingHeight = 1.5f;
+    [SerializeField]
+    private float _grapplingOffset = 1f;
     [SerializeField]
     private float _verticalOffset = 3.0f;
     [SerializeField]
     private float _horizontalOffset = -6.0f;
     [SerializeField]
     private float _shurikanOffsetMultiplier = 2.0f;
+    [SerializeField]
+    float _pressedMoveDistance = 25.0f;
 
     //*******************************************
     //FOR TESTING ONLY
@@ -25,6 +37,7 @@ public class Character_Controller : MonoBehaviour
 
 
     private bool _start = false;
+    private bool _grapple = false;
     private uint _score = 0;
 
     [SerializeField]
@@ -57,8 +70,15 @@ public class Character_Controller : MonoBehaviour
                 FindObjectOfType<GameState>().GetComponent<GameState>().SetStart(true);
                 _start = true;
             }
+            _grapple = false;
             ++_score;
-            CalculateQuadraticParam();
+            if (_poleManager.GetNexPole().tag == "DefaultPole")
+                CalculateQuadraticParam();
+            else
+            {
+                _grapple = true;
+                CalculateQuadraticGrapplingParam();
+            }
         }
         else if (collision.gameObject.tag == "Dead")
         {
@@ -75,11 +95,33 @@ public class Character_Controller : MonoBehaviour
         if (_start)
         {
             float x = GetDistanceToLastPole();
-            if (x <= 5.0f)
+            Debug.Log(x);
+            if (x <= _poleManager.GetMaxDistance() && !_grapple)
             {
                 x += _horizontalOffset;
                 float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
                 transform.position = new Vector3(transform.position.x, height, transform.position.z);
+            }
+            else if (x <= _poleManager.GetMaxDistance() * 2f && _grapple)
+            {
+                if (x <= _grapplingOffset)
+                {
+                    x += _horizontalOffset;
+                    float height = _lineParam1.x * x + _lineParam1.y;
+                    transform.position = new Vector3(transform.position.x, height, transform.position.z);
+                }
+                else if (x >= (_poleManager.GetMaxDistance() * 2f) - _grapplingOffset)
+                {
+                    x += _horizontalOffset;
+                    float height = _lineParam2.x * x + _lineParam2.y;
+                    transform.position = new Vector3(transform.position.x, height, transform.position.z);
+                }
+                else
+                {
+                    x += _horizontalOffset;
+                    float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
+                    transform.position = new Vector3(transform.position.x, height, transform.position.z);
+                }
             }
         }
     }
@@ -103,6 +145,49 @@ public class Character_Controller : MonoBehaviour
         _poleManager.RemoveLastPole();
     }
 
+    private void CalculateQuadraticGrapplingParam()
+    {
+        _prevPole = _poleManager.GetCurrentPole();
+        _poleManager.RemoveLastPole();
+
+        Vector2 current = new Vector2(_prevPole.transform.position.x, _prevPole.transform.position.y + _verticalOffset);
+        Vector2 next = new Vector2(_poleManager.GetNexPole().transform.position.x, _poleManager.GetNexPole().transform.position.y + _verticalOffset);
+        Vector2 fase1End = new Vector2(current.x + _grapplingOffset, _grapplingJumpHeight);
+        Vector2 fase2End = new Vector2(next.x - _grapplingOffset, _grapplingJumpHeight);
+        Vector2 mid = new Vector2(current.x + (next.x - current.x) / 2.0f, _grapplingHeight);
+
+        //Fase1 [LINE]
+        _lineParam1 = LineParameterFromPoints(current, fase1End);
+
+        //Fase2 [Quadratic]
+        _quadraticParam.x = ((mid.y - fase1End.y) * (fase1End.x - fase2End.x) + (fase2End.y - fase1End.y) * (mid.x - fase1End.x)) /
+            ((fase1End.x - fase2End.x) * (Mathf.Pow(mid.x, 2) - Mathf.Pow(fase1End.x, 2)) + (mid.x - fase1End.x) * (Mathf.Pow(fase2End.x, 2) - Mathf.Pow(fase1End.x, 2)));
+
+        _quadraticParam.y = ((mid.y - fase1End.y) - _quadraticParam.x * (Mathf.Pow(mid.x, 2) - Mathf.Pow(fase1End.x, 2))) / (mid.x - fase1End.x);
+
+        _quadraticParam.z = fase1End.y - _quadraticParam.x * Mathf.Pow(fase1End.x, 2) - _quadraticParam.y * fase1End.x;
+
+        //Fase3 [LINE]
+        _lineParam2 = LineParameterFromPoints(fase2End, next);
+
+        _poleManager.RemoveLastPole();
+    }
+
+    private Vector2 LineParameterFromPoints(Vector2 p1, Vector2 p2)
+    {
+        float A = 0f;
+        float B = 0f;
+        float C = 0f;
+
+        A = p2.y - p1.y;
+        B = -(p2.x - p1.x);
+        C = p1.y * p2.x - p1.x * p2.y;
+
+        return new Vector2(-A/B, -C/B);
+    }
+
+
+
     /*Helper function to prevent clipping*/
     private float GetDistanceToLastPole()
     {
@@ -121,11 +206,11 @@ public class Character_Controller : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             _pressPosition = Input.mousePosition;
+
         }
         else if (Input.GetMouseButtonUp(0))
         {
             _releasePosition = Input.mousePosition;
-            Debug.Log(Vector2.Distance(_pressPosition, _releasePosition));
             if (Vector2.Distance(_pressPosition, _releasePosition) > _minSwipeDistance)
             {
                 ThrowShurikan();

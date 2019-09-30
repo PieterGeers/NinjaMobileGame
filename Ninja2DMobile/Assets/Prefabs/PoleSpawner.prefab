@@ -49,8 +49,11 @@ MonoBehaviour:
   _initAmountOfPoles: 4
   _destroyTime: 15
   _chanceForDestroyable: {x: 0, y: 20}
+  _chanceForGrappling: {x: 50, y: 100}
   _poleReference: {fileID: 6893855875270756605, guid: 4796b837e00e2c7498f968ce5f2ebd02,
     type: 3}
   _destroyablePoleReference: {fileID: 6205215210083957198, guid: 1fbd958a750301149a825e4b6d2641aa,
+    type: 3}
+  _grapplingPoleReference: {fileID: 8405894396442822007, guid: b0a6ef2b699ed864b8d453429ecfcaf9,
     type: 3}
   _polesOnScreen: []
