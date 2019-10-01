@@ -26,8 +26,6 @@ public class Character_Controller : MonoBehaviour
     private float _horizontalOffset = -6.0f;
     [SerializeField]
     private float _shurikanOffsetMultiplier = 2.0f;
-    [SerializeField]
-    float _pressedMoveDistance = 25.0f;
 
     //*******************************************
     //FOR TESTING ONLY
@@ -38,10 +36,13 @@ public class Character_Controller : MonoBehaviour
 
     private bool _start = false;
     private bool _grapple = false;
+    private bool _pressed = false;
     private uint _score = 0;
 
     [SerializeField]
     private GameObject _prevPole = null;
+    [SerializeField]
+    private GameObject _prevGrapplingPole = null;
 
     private Vector2 _pressPosition = Vector2.zero;
     private Vector2 _releasePosition = Vector2.zero;
@@ -95,7 +96,6 @@ public class Character_Controller : MonoBehaviour
         if (_start)
         {
             float x = GetDistanceToLastPole();
-            Debug.Log(x);
             if (x <= _poleManager.GetMaxDistance() && !_grapple)
             {
                 x += _horizontalOffset;
@@ -118,6 +118,8 @@ public class Character_Controller : MonoBehaviour
                 }
                 else
                 {
+                    if (!_pressed)
+                        _start = false;
                     x += _horizontalOffset;
                     float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
                     transform.position = new Vector3(transform.position.x, height, transform.position.z);
@@ -149,6 +151,7 @@ public class Character_Controller : MonoBehaviour
     {
         _prevPole = _poleManager.GetCurrentPole();
         _poleManager.RemoveLastPole();
+        _prevGrapplingPole = _poleManager.GetCurrentPole();
 
         Vector2 current = new Vector2(_prevPole.transform.position.x, _prevPole.transform.position.y + _verticalOffset);
         Vector2 next = new Vector2(_poleManager.GetNexPole().transform.position.x, _poleManager.GetNexPole().transform.position.y + _verticalOffset);
@@ -170,9 +173,11 @@ public class Character_Controller : MonoBehaviour
         //Fase3 [LINE]
         _lineParam2 = LineParameterFromPoints(fase2End, next);
 
+        
         _poleManager.RemoveLastPole();
     }
 
+    /*Helper functions for calculating path the character will take*/
     private Vector2 LineParameterFromPoints(Vector2 p1, Vector2 p2)
     {
         float A = 0f;
@@ -185,8 +190,6 @@ public class Character_Controller : MonoBehaviour
 
         return new Vector2(-A/B, -C/B);
     }
-
-
 
     /*Helper function to prevent clipping*/
     private float GetDistanceToLastPole()
@@ -206,16 +209,18 @@ public class Character_Controller : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             _pressPosition = Input.mousePosition;
-
+            _pressed = true;
         }
         else if (Input.GetMouseButtonUp(0))
         {
             _releasePosition = Input.mousePosition;
+            _pressed = false;
             if (Vector2.Distance(_pressPosition, _releasePosition) > _minSwipeDistance)
             {
                 ThrowShurikan();
             }
         }
+
     }
 
     /*Function ThrowShurikan spawns in a shurikan and sets the correct direction*/

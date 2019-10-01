@@ -51,5 +51,11 @@ public class Rope : MonoBehaviour
     {
         return _initialized;
     }
+
+    public void GenerateRope(uint nb)
+    {
+        _links = nb;
+        GenerateRope();
+    }
 }
 
