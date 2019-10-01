@@ -42,7 +42,7 @@ public class Character_Controller : MonoBehaviour
     [SerializeField]
     private GameObject _prevPole = null;
     [SerializeField]
-    private GameObject _prevGrapplingPole = null;
+    private Rope _prevGrapplingPole = null;
 
     private Vector2 _pressPosition = Vector2.zero;
     private Vector2 _releasePosition = Vector2.zero;
@@ -120,6 +120,13 @@ public class Character_Controller : MonoBehaviour
                 {
                     if (!_pressed)
                         _start = false;
+                    if (!_prevGrapplingPole.IsInitialized())
+                    {
+                        _prevGrapplingPole.GenerateRope(6);
+                        //HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
+                        //joint.autoConfigureConnectedAnchor = false;
+                        //joint.connectedBody = _prevGrapplingPole.GetLastLink();
+                    }
                     x += _horizontalOffset;
                     float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
                     transform.position = new Vector3(transform.position.x, height, transform.position.z);
@@ -151,7 +158,7 @@ public class Character_Controller : MonoBehaviour
     {
         _prevPole = _poleManager.GetCurrentPole();
         _poleManager.RemoveLastPole();
-        _prevGrapplingPole = _poleManager.GetCurrentPole();
+        _prevGrapplingPole = _poleManager.GetCurrentPole().GetComponentInChildren<Rope>();
 
         Vector2 current = new Vector2(_prevPole.transform.position.x, _prevPole.transform.position.y + _verticalOffset);
         Vector2 next = new Vector2(_poleManager.GetNexPole().transform.position.x, _poleManager.GetNexPole().transform.position.y + _verticalOffset);

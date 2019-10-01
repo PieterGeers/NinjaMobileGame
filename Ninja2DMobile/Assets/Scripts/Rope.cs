@@ -25,7 +25,8 @@ public class Rope : MonoBehaviour
 
     private void Start()
     {
-        GenerateRope();
+        if (_links > 0)
+            GenerateRope();
     }
 
 
@@ -33,7 +34,9 @@ public class Rope : MonoBehaviour
     {
         for (uint i = 0; i < _links; ++i)
         {
-            GameObject newLink = Instantiate(_link, transform);
+            Transform trans = transform;
+            trans.position = _previousRB.transform.position;
+            GameObject newLink = Instantiate(_link, trans);
             HingeJoint2D joint = newLink.GetComponent<HingeJoint2D>();
             joint.connectedBody = _previousRB;
 
