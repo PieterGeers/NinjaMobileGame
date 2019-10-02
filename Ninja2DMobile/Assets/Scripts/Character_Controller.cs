@@ -42,7 +42,7 @@ public class Character_Controller : MonoBehaviour
     [SerializeField]
     private GameObject _prevPole = null;
     [SerializeField]
-    private Rope _prevGrapplingPole = null;
+    private LineRenderer _prevGrapplingPole = null;
 
     private Vector2 _pressPosition = Vector2.zero;
     private Vector2 _releasePosition = Vector2.zero;
@@ -112,6 +112,8 @@ public class Character_Controller : MonoBehaviour
                 }
                 else if (x >= (_poleManager.GetMaxDistance() * 2f) - _grapplingOffset)
                 {
+                    if (_prevGrapplingPole != null)
+                        Destroy(_prevGrapplingPole);
                     x += _horizontalOffset;
                     float height = _lineParam2.x * x + _lineParam2.y;
                     transform.position = new Vector3(transform.position.x, height, transform.position.z);
@@ -120,18 +122,16 @@ public class Character_Controller : MonoBehaviour
                 {
                     if (!_pressed)
                         _start = false;
-                    if (!_prevGrapplingPole.IsInitialized())
-                    {
-                        _prevGrapplingPole.GenerateRope(6);
-                        //HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
-                        //joint.autoConfigureConnectedAnchor = false;
-                        //joint.connectedBody = _prevGrapplingPole.GetLastLink();
-                    }
                     x += _horizontalOffset;
                     float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
                     transform.position = new Vector3(transform.position.x, height, transform.position.z);
+                    DrawLineWhileGrapple();
                 }
             }
+        }
+        else if (_prevGrapplingPole != null)
+        {
+            Destroy(_prevGrapplingPole);
         }
     }
 
@@ -144,12 +144,7 @@ public class Character_Controller : MonoBehaviour
         Vector2 next = new Vector2(_poleManager.GetNexPole().transform.position.x, _poleManager.GetNexPole().transform.position.y + _verticalOffset);
         Vector2 mid = new Vector2(current.x + (next.x - current.x) / 2.0f, _height);
 
-        _quadraticParam.x = ((mid.y - current.y) * (current.x - next.x) + (next.y - current.y) * (mid.x - current.x)) /
-            ((current.x - next.x) * (Mathf.Pow(mid.x, 2) - Mathf.Pow(current.x, 2)) + (mid.x - current.x) * (Mathf.Pow(next.x, 2) - Mathf.Pow(current.x, 2)));
-
-        _quadraticParam.y = ((mid.y - current.y) - _quadraticParam.x * (Mathf.Pow(mid.x, 2) - Mathf.Pow(current.x, 2))) / (mid.x - current.x);
-
-        _quadraticParam.z = current.y - _quadraticParam.x * Mathf.Pow(current.x, 2) - _quadraticParam.y * current.x;
+        QuadraticParametersFromPoints(current, mid, next);
 
         _poleManager.RemoveLastPole();
     }
@@ -158,7 +153,7 @@ public class Character_Controller : MonoBehaviour
     {
         _prevPole = _poleManager.GetCurrentPole();
         _poleManager.RemoveLastPole();
-        _prevGrapplingPole = _poleManager.GetCurrentPole().GetComponentInChildren<Rope>();
+        _prevGrapplingPole = _poleManager.GetCurrentPole().GetComponentInChildren<LineRenderer>();
 
         Vector2 current = new Vector2(_prevPole.transform.position.x, _prevPole.transform.position.y + _verticalOffset);
         Vector2 next = new Vector2(_poleManager.GetNexPole().transform.position.x, _poleManager.GetNexPole().transform.position.y + _verticalOffset);
@@ -170,12 +165,7 @@ public class Character_Controller : MonoBehaviour
         _lineParam1 = LineParameterFromPoints(current, fase1End);
 
         //Fase2 [Quadratic]
-        _quadraticParam.x = ((mid.y - fase1End.y) * (fase1End.x - fase2End.x) + (fase2End.y - fase1End.y) * (mid.x - fase1End.x)) /
-            ((fase1End.x - fase2End.x) * (Mathf.Pow(mid.x, 2) - Mathf.Pow(fase1End.x, 2)) + (mid.x - fase1End.x) * (Mathf.Pow(fase2End.x, 2) - Mathf.Pow(fase1End.x, 2)));
-
-        _quadraticParam.y = ((mid.y - fase1End.y) - _quadraticParam.x * (Mathf.Pow(mid.x, 2) - Mathf.Pow(fase1End.x, 2))) / (mid.x - fase1End.x);
-
-        _quadraticParam.z = fase1End.y - _quadraticParam.x * Mathf.Pow(fase1End.x, 2) - _quadraticParam.y * fase1End.x;
+        QuadraticParametersFromPoints(fase1End, mid, fase2End);
 
         //Fase3 [LINE]
         _lineParam2 = LineParameterFromPoints(fase2End, next);
@@ -196,6 +186,26 @@ public class Character_Controller : MonoBehaviour
         C = p1.y * p2.x - p1.x * p2.y;
 
         return new Vector2(-A/B, -C/B);
+    }
+
+    private void QuadraticParametersFromPoints(Vector2 current, Vector2 mid, Vector2 next)
+    {
+        _quadraticParam.x = ((mid.y - current.y) * (current.x - next.x) + (next.y - current.y) * (mid.x - current.x)) /
+            ((current.x - next.x) * (Mathf.Pow(mid.x, 2) - Mathf.Pow(current.x, 2)) + (mid.x - current.x) * (Mathf.Pow(next.x, 2) - Mathf.Pow(current.x, 2)));
+
+        _quadraticParam.y = ((mid.y - current.y) - _quadraticParam.x * (Mathf.Pow(mid.x, 2) - Mathf.Pow(current.x, 2))) / (mid.x - current.x);
+
+        _quadraticParam.z = current.y - _quadraticParam.x * Mathf.Pow(current.x, 2) - _quadraticParam.y * current.x;
+    }
+
+
+    private void DrawLineWhileGrapple()
+    {
+        if (_prevGrapplingPole != null)
+        {
+            Vector3[] positions = new Vector3[2] { transform.position, _prevGrapplingPole.transform.position };
+            _prevGrapplingPole.SetPositions(positions);
+        }
     }
 
     /*Helper function to prevent clipping*/
