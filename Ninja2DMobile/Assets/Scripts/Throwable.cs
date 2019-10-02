@@ -21,6 +21,7 @@ public class Throwable : MonoBehaviour
     {
         _direction = direction;
         _rb.AddForce(direction * _speed);
+        _rb.AddTorque(10);
         Destroy(gameObject, _timeToDestroy);
     }
 
@@ -50,12 +51,4 @@ public class Throwable : MonoBehaviour
     {
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
     }
-
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        DeleteShurikan();
-    //    }
-    //}
 }

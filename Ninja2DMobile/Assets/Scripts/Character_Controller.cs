@@ -6,12 +6,12 @@ public class Character_Controller : MonoBehaviour
 {
     [SerializeField]
     private PoleManager _poleManager = null;
-    [SerializeField]
-    private Vector3 _quadraticParam = Vector3.zero;
-    [SerializeField]
+    private Vector3 _quadraticParamFase2 = Vector3.zero;
+    private Vector3 _quadraticParamFase1 = Vector3.zero;
+    private Vector3 _quadraticParamFase3 = Vector3.zero;
     private Vector2 _lineParam1 = Vector2.zero;
-    [SerializeField]
     private Vector2 _lineParam2 = Vector2.zero;
+
     [SerializeField]
     private float _height = 7.0f;
     [SerializeField]
@@ -98,33 +98,25 @@ public class Character_Controller : MonoBehaviour
             float x = GetDistanceToLastPole();
             if (x <= _poleManager.GetMaxDistance() && !_grapple)
             {
-                x += _horizontalOffset;
-                float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
-                transform.position = new Vector3(transform.position.x, height, transform.position.z);
+                MoveQuadratic(x, _quadraticParamFase2);
             }
             else if (x <= _poleManager.GetMaxDistance() * 2f && _grapple)
             {
                 if (x <= _grapplingOffset)
                 {
-                    x += _horizontalOffset;
-                    float height = _lineParam1.x * x + _lineParam1.y;
-                    transform.position = new Vector3(transform.position.x, height, transform.position.z);
+                    MoveQuadratic(x, _quadraticParamFase1);
                 }
                 else if (x >= (_poleManager.GetMaxDistance() * 2f) - _grapplingOffset)
                 {
                     if (_prevGrapplingPole != null)
                         Destroy(_prevGrapplingPole);
-                    x += _horizontalOffset;
-                    float height = _lineParam2.x * x + _lineParam2.y;
-                    transform.position = new Vector3(transform.position.x, height, transform.position.z);
+                    MoveQuadratic(x, _quadraticParamFase3);
                 }
                 else
                 {
                     if (!_pressed)
                         _start = false;
-                    x += _horizontalOffset;
-                    float height = _quadraticParam.x * Mathf.Pow(x, 2) + _quadraticParam.y * x + _quadraticParam.z;
-                    transform.position = new Vector3(transform.position.x, height, transform.position.z);
+                    MoveQuadratic(x, _quadraticParamFase2);
                     DrawLineWhileGrapple();
                 }
             }
@@ -144,7 +136,7 @@ public class Character_Controller : MonoBehaviour
         Vector2 next = new Vector2(_poleManager.GetNexPole().transform.position.x, _poleManager.GetNexPole().transform.position.y + _verticalOffset);
         Vector2 mid = new Vector2(current.x + (next.x - current.x) / 2.0f, _height);
 
-        QuadraticParametersFromPoints(current, mid, next);
+        _quadraticParamFase2 = QuadraticParametersFromPoints(current, mid, next);
 
         _poleManager.RemoveLastPole();
     }
@@ -156,21 +148,22 @@ public class Character_Controller : MonoBehaviour
         _prevGrapplingPole = _poleManager.GetCurrentPole().GetComponentInChildren<LineRenderer>();
 
         Vector2 current = new Vector2(_prevPole.transform.position.x, _prevPole.transform.position.y + _verticalOffset);
+        Vector2 current2 = new Vector2(current.x + 2 * _grapplingOffset, current.y);
         Vector2 next = new Vector2(_poleManager.GetNexPole().transform.position.x, _poleManager.GetNexPole().transform.position.y + _verticalOffset);
+        Vector2 next2 = new Vector2(next.x - 2 * _grapplingOffset, next.y);
         Vector2 fase1End = new Vector2(current.x + _grapplingOffset, _grapplingJumpHeight);
         Vector2 fase2End = new Vector2(next.x - _grapplingOffset, _grapplingJumpHeight);
         Vector2 mid = new Vector2(current.x + (next.x - current.x) / 2.0f, _grapplingHeight);
 
         //Fase1 [LINE]
-        _lineParam1 = LineParameterFromPoints(current, fase1End);
+        _quadraticParamFase1 = QuadraticParametersFromPoints(current, fase1End, current2);
 
         //Fase2 [Quadratic]
-        QuadraticParametersFromPoints(fase1End, mid, fase2End);
+        _quadraticParamFase2 = QuadraticParametersFromPoints(fase1End, mid, fase2End);
 
         //Fase3 [LINE]
-        _lineParam2 = LineParameterFromPoints(fase2End, next);
+        _quadraticParamFase3 = QuadraticParametersFromPoints(next2, fase2End, next);
 
-        
         _poleManager.RemoveLastPole();
     }
 
@@ -188,16 +181,26 @@ public class Character_Controller : MonoBehaviour
         return new Vector2(-A/B, -C/B);
     }
 
-    private void QuadraticParametersFromPoints(Vector2 current, Vector2 mid, Vector2 next)
+    private Vector3 QuadraticParametersFromPoints(Vector2 current, Vector2 mid, Vector2 next)
     {
-        _quadraticParam.x = ((mid.y - current.y) * (current.x - next.x) + (next.y - current.y) * (mid.x - current.x)) /
+        Vector3 newVec = Vector3.zero;
+
+        newVec.x = ((mid.y - current.y) * (current.x - next.x) + (next.y - current.y) * (mid.x - current.x)) /
             ((current.x - next.x) * (Mathf.Pow(mid.x, 2) - Mathf.Pow(current.x, 2)) + (mid.x - current.x) * (Mathf.Pow(next.x, 2) - Mathf.Pow(current.x, 2)));
 
-        _quadraticParam.y = ((mid.y - current.y) - _quadraticParam.x * (Mathf.Pow(mid.x, 2) - Mathf.Pow(current.x, 2))) / (mid.x - current.x);
+        newVec.y = ((mid.y - current.y) - newVec.x * (Mathf.Pow(mid.x, 2) - Mathf.Pow(current.x, 2))) / (mid.x - current.x);
 
-        _quadraticParam.z = current.y - _quadraticParam.x * Mathf.Pow(current.x, 2) - _quadraticParam.y * current.x;
+        newVec.z = current.y - newVec.x * Mathf.Pow(current.x, 2) - newVec.y * current.x;
+
+        return newVec;
     }
 
+    private void MoveQuadratic(float x, Vector3 param)
+    {
+        x += _horizontalOffset;
+        float height = param.x * Mathf.Pow(x, 2) + param.y * x + param.z;
+        transform.position = new Vector3(transform.position.x, height, transform.position.z);
+    }
 
     private void DrawLineWhileGrapple()
     {
