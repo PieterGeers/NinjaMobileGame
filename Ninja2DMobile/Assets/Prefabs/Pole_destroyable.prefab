@@ -245,7 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hook: {fileID: 6205215209264561441}
   _link: {fileID: 4650512292882956791, guid: 46c653c171da45b4bba790425c910e23, type: 3}
-  _links: 4
+  _links: 5
 --- !u!114 &6205215210083957193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,4 +272,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1537dd415f747294ea907a3d9cea27bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2.5
+  _speed: -2.5

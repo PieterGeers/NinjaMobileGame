@@ -39,6 +39,7 @@ public class Throwable : MonoBehaviour
             }
 
             gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            _rb.AddForce(new Vector3(-1,0,0) * _speed / 2f);
         }
     }
 

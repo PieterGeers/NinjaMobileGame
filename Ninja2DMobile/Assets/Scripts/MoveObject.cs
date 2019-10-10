@@ -20,6 +20,11 @@ public class MoveObject : MonoBehaviour
     void Update()
     {
         if (_gameState.Start())
-            transform.position += Vector3.left * _speed * Time.deltaTime;
+            transform.position += Vector3.right * _speed * Time.deltaTime;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _speed = speed;
     }
 }
