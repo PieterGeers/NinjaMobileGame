@@ -64,7 +64,7 @@ public class Character_Controller : MonoBehaviour
     /*Function Onclollision checks if the player is colliding with a pole and then calculates the jump to the next pole*/
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "DefaultPole")
+        if (collision.gameObject.tag == "DefaultPole" && !_start)
         {
             if (!_start)
             {
@@ -86,6 +86,11 @@ public class Character_Controller : MonoBehaviour
             Time.timeScale = 0.0f;
             _canvas.SetActive(true);
         }
+        else if (collision.gameObject.tag == "OutOfBounds" && _grapple)
+        {
+            Time.timeScale = 0.0f;
+            _canvas.SetActive(true);
+        }
     }
 
     /*Function Update does the Input and the automatic movement of the character*/
@@ -96,7 +101,24 @@ public class Character_Controller : MonoBehaviour
         if (_start)
         {
             float x = GetDistanceToLastPole();
-            if (x <= _poleManager.GetMaxDistance() && !_grapple)
+            if ((x >= _poleManager.GetMaxDistance() && !_grapple) || (x >= _poleManager.GetMaxDistance() * 2f && _grapple))
+            {
+                if (!_start)
+                {
+                    FindObjectOfType<GameState>().GetComponent<GameState>().SetStart(true);
+                    _start = true;
+                }
+                _grapple = false;
+                ++_score;
+                if (_poleManager.GetNexPole().tag == "DefaultPole")
+                    CalculateQuadraticParam();
+                else
+                {
+                    _grapple = true;
+                    CalculateQuadraticGrapplingParam();
+                }
+            }
+            else if (x <= _poleManager.GetMaxDistance() && !_grapple)
             {
                 MoveQuadratic(x, _quadraticParamFase2);
             }
@@ -246,9 +268,9 @@ public class Character_Controller : MonoBehaviour
     /*Function ThrowShurikan spawns in a shurikan and sets the correct direction*/
     private void ThrowShurikan()
     {
-        Vector2 throwDirection = new Vector2(_releasePosition.x - _pressPosition.x, _releasePosition.y - _pressPosition.y).normalized;
+        Vector2 throwDirection = new Vector2(_releasePosition.x - _pressPosition.y, _releasePosition.y - _pressPosition.y).normalized;
         GameObject shurikan = Instantiate(_shurikan);
-        shurikan.transform.position = transform.position + new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMultiplier;
+        shurikan.transform.position = new Vector3(transform.position.x, FindObjectOfType<Camera>().ScreenToWorldPoint(_pressPosition).y, 0f) + new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMultiplier;
         shurikan.GetComponent<Throwable>().SetDirection(throwDirection);
     }
 

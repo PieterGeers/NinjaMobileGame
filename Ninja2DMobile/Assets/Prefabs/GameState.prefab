@@ -44,3 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _beginOnPlay: 0
+  _currentSpeed: -2.5
+  _maxSpeed: -10
+  _speedIncrease: -0.1
+  _timeToIncrease: 5
+  SpeedIncreaseBool: 0

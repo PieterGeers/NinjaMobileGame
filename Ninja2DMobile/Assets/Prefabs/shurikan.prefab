@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -1898549700504091988}
   - component: {fileID: -287495176225019912}
   - component: {fileID: 4898181174753758232}
+  - component: {fileID: -3312287102822639418}
   m_Layer: 0
   m_Name: shurikan
   m_TagString: Untagged
@@ -133,3 +134,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 1000
   _timeToDestroy: 2
+--- !u!114 &-3312287102822639418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5512512163095687918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ad59b1ddf31ff4b9654ccdc7f62877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leafsParticlePrefab: {fileID: 4476079540617896019, guid: 93656270a156a994cbb66bd62e1346d4,
+    type: 3}
+  _sparksParticlePrefab: {fileID: 2772326629067676815, guid: 09c47d4eedbc81e4aa5eb9546987db76,
+    type: 3}
+  _destroyTime: 5

@@ -8,6 +8,8 @@ TagManager:
   - DestroyablePole
   - Dead
   - GrapplingPole
+  - Foliage
+  - OutOfBounds
   layers:
   - Default
   - TransparentFX

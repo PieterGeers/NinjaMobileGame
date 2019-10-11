@@ -21,21 +21,20 @@ public class PoleManager : MonoBehaviour
     [SerializeField]
     private GameObject _poleReference = null;
     [SerializeField]
-    private GameObject _destroyablePoleReference = null;
-    [SerializeField]
     private GameObject _grapplingPoleReference = null;
 
     private GameObject _newPole = null;
     [SerializeField]
     private List<GameObject> _polesOnScreen = null;
+    private GameState _gameState = null;
 
     /*Function Awake checks if a gameobject reference was given to this script. If not then this will result in a crash*/
     private void Awake()
     {
+        if (_gameState == null)
+            _gameState = FindObjectOfType<GameState>().GetComponent<GameState>();
         if (_poleReference == null)
             throw new System.Exception("_poleReference = NULL");
-        if (_destroyablePoleReference == null)
-            throw new System.Exception("_destroyablePoleReference = NULL");
         if (_grapplingPoleReference == null)
             throw new System.Exception("_grapplingPoleReference = NULL");
     }
@@ -47,9 +46,11 @@ public class PoleManager : MonoBehaviour
 
         for (uint i = 0; i < _initAmountOfPoles; ++i)
         {
-            SpawnPole();
+            SpawnPole(-1);
             gameObject.transform.position = new Vector3(gameObject.transform.position.x + _maxDistance, gameObject.transform.position.y, gameObject.transform.position.z);
         }
+
+        _polesOnScreen[0].GetComponent<BoxCollider2D>().enabled = true;
     }
 
     /*Function Update instantiates a new pole object if the previous one has traveled a certain distance*/
@@ -60,32 +61,41 @@ public class PoleManager : MonoBehaviour
             int chance = Random.Range(0, 100);
             if (_newPole.tag == "GrapplingPole")
             {
-                SpawnPole();
+                SpawnPole(-1);
             }
             else
             {
-                SpawnPole();
-                SpawnDestroyablePole(chance);
+                SpawnPole(chance);
                 SpawnGrapplingPole(chance);
             }
+        }
+        if (_gameState.SpeedIncreaseBool)
+        {
+            GameObject[] poles = GameObject.FindGameObjectsWithTag("DefaultPole");
+            GameObject[] grapple = GameObject.FindGameObjectsWithTag("GrapplingPole");
+            foreach (GameObject p in poles)
+            {
+                p.GetComponent<MoveObject>().SetSpeed(_gameState.GetSpeed());
+            }
+            foreach (GameObject g in grapple)
+            {
+                g.GetComponent<MoveObject>().SetSpeed(_gameState.GetSpeed());
+            }
+            _gameState.SpeedIncreaseBool = false;
         }
     }
 
     /*Function SpawnPole creates a new pole object and transforms it to the correct location*/
-    private void SpawnPole()
+    private void SpawnPole(int chance)
     {
         _newPole = Instantiate(_poleReference);
         _newPole.transform.position = transform.position + new Vector3(0.0f, Random.Range(_height, -_height), 0.0f);
+        _newPole.GetComponent<MoveObject>().SetSpeed(_gameState.GetSpeed());
         Destroy(_newPole, _destroyTime);
         _polesOnScreen.Add(_newPole);
-    }
-
-    private void SpawnDestroyablePole(int chance)
-    {
         if (chance >= _chanceForDestroyable.x && chance < _chanceForDestroyable.y)
         {
-            GameObject newPole = Instantiate(_destroyablePoleReference, transform);
-            newPole.transform.position = new Vector3(transform.position.x, 5.5f, transform.position.z);
+            _newPole.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 
@@ -97,6 +107,7 @@ public class PoleManager : MonoBehaviour
             Destroy(_newPole);
             _newPole = Instantiate(_grapplingPoleReference);
             _newPole.transform.position = new Vector3(transform.position.x, 5f, transform.position.z);
+            _newPole.GetComponent<MoveObject>().SetSpeed(_gameState.GetSpeed());
             Destroy(_newPole, _destroyTime);
             _polesOnScreen.Add(_newPole);
         }
