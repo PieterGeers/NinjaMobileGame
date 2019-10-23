@@ -30,14 +30,18 @@ public class Enemy : MonoBehaviour
     {
         if (_isEnemyAlive)
         {
+            
             transform.position = Vector2.MoveTowards(transform.position, _target.position, EnemySpeed * Time.deltaTime);
+            _textLives.text = _enemyHealth.ToString();
         }
         else
         {
-            Respawn();
+            Invoke("Respawn", Random.Range(3.0f, 5.0f));
         }
-        
+ 
     }
+
+
 
     void Respawn()
     {
@@ -46,7 +50,26 @@ public class Enemy : MonoBehaviour
         _enemyHealth = Random.Range(3, 8);
         _textLives.text = _enemyHealth.ToString();
         transform.position = new Vector2(randomPosX + _target.position.x, randomPosY + _target.position.y);
+        gameObject.SetActive(true);
         _isEnemyAlive = true;
     }
+
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Shuriken")
+        {
+            if (_enemyHealth >= 1 )
+            {
+                --_enemyHealth;
+            }
+            else if (_enemyHealth == 0)
+            {
+                _isEnemyAlive = false;
+                gameObject.SetActive(false);
+            }
+        }
+    }
+
 
 }

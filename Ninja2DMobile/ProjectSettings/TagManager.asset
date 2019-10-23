@@ -10,6 +10,7 @@ TagManager:
   - GrapplingPole
   - Foliage
   - OutOfBounds
+  - Shuriken
   layers:
   - Default
   - TransparentFX
