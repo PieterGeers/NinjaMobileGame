@@ -11,6 +11,7 @@ TagManager:
   - Foliage
   - OutOfBounds
   - Shuriken
+  - Position
   layers:
   - Default
   - TransparentFX

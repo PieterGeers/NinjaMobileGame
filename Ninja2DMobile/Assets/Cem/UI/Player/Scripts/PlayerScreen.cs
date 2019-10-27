@@ -8,7 +8,7 @@ public class PlayerScreen : MonoBehaviour
     [SerializeField]
     private Text _scorePoints = null;
     [SerializeField]
-    private GameObject _character = null;
+    private Player _character = null;
 
     private uint _score = 0;
 
@@ -20,7 +20,7 @@ public class PlayerScreen : MonoBehaviour
 
     void Update()
     {
-        _score = _character.GetComponent<Character_Controller>().GetScore();
+        _score = _character.GetScore();
         _scorePoints.text = _score.ToString();
     }
 }

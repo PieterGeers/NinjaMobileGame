@@ -21,7 +21,7 @@ public class ForegroundSpawner : MonoBehaviour
     [SerializeField]
     private uint _destroyTime = 15;
     [SerializeField]
-    private GameObject _newObject = null;
+    private Vector3 _newObjectPosition = Vector3.zero;
 
     private float _maxDistance = 0.0f;
 
@@ -49,7 +49,7 @@ public class ForegroundSpawner : MonoBehaviour
     /*Function Update spawns a new foreground object is the last on is far enough away*/
     private void Update()
     {
-        if ((transform.position.x - _newObject.transform.position.x) >= _maxDistance)
+        if ((transform.position.x - _newObjectPosition.x) >= _maxDistance)
         {
             SpawnObject();
         }
@@ -60,12 +60,11 @@ public class ForegroundSpawner : MonoBehaviour
     {
         int randomObj = Random.Range(0, _foreground.Count);
         float randomScale = Random.Range(_minMaxScale.x, _minMaxScale.y);
-        _newObject = Instantiate(_foreground[randomObj]);
-        _newObject.transform.position = transform.position + new Vector3(0.0f, Random.Range(_height, -_height), 0.0f);
-        _newObject.transform.localScale = new Vector3(randomScale, randomScale, 1.0f);
-        Destroy(_newObject, _destroyTime);
+        GameObject newObject = Instantiate(_foreground[randomObj]);
+        newObject.transform.position = transform.position + new Vector3(0.0f, Random.Range(_height, -_height), 0.0f);
+        newObject.transform.localScale = new Vector3(randomScale, randomScale, 1.0f);
+        Destroy(newObject, _destroyTime);
         _maxDistance = Random.Range(_minMaxDistance.x, _minMaxDistance.y);
+        _newObjectPosition = newObject.transform.position;
     }
-
-
 }

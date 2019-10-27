@@ -24,9 +24,6 @@ public class DynamicBackground : MonoBehaviour
     [SerializeField]
     private float _modifier4 = 0;
 
-    [SerializeField]
-    private GameState _gameState = null;
-
     private Camera _mainCam = null;
 
     /*Void Awake checks if the parameters are set*/
@@ -40,8 +37,6 @@ public class DynamicBackground : MonoBehaviour
             throw new System.Exception("_layer3 = NULL");
         else if (_layer4 == null)
             throw new System.Exception("_layer4 = NULL");
-        else if (_gameState == null)
-            throw new System.Exception("_gameState = NULL");
     }
 
     /*Function Start sets the main camera in a var*/
@@ -53,13 +48,10 @@ public class DynamicBackground : MonoBehaviour
     /*Function Update translates the different layers in the correct direction*/
     private void Update()
     {
-        if (_gameState.Start())
-        {
-            Move(_layer1, _modifier1);
-            Move(_layer2, _modifier2);
-            Move(_layer3, _modifier3);
-            Move(_layer4, _modifier4);
-        }
+        Move(_layer1, _modifier1);
+        Move(_layer2, _modifier2);
+        Move(_layer3, _modifier3);
+        Move(_layer4, _modifier4);
     }
     
     /*Function Move translates the different layers with the appropriate speed and makes sure the layers are infinite*/

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4408186290193548912}
   - component: {fileID: 4408186290193548914}
   - component: {fileID: 4408186290193548915}
-  - component: {fileID: 4408186290193548916}
+  - component: {fileID: 7058889155494480259}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -129,7 +129,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 5
---- !u!114 &4408186290193548916
+--- !u!114 &7058889155494480259
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,20 +138,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4408186290193548927}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa24c06cdc7a85d4e966ecba013595b3, type: 3}
+  m_Script: {fileID: 11500000, guid: eea02bb24d07f99479217ebbed5390aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _poleManager: {fileID: 0}
-  _height: 3
-  _grapplingJumpHeight: 1.5
-  _grapplingHeight: -1.5
-  _grapplingOffset: 1
-  _verticalOffset: 3
-  _horizontalOffset: -6
-  _shurikanOffsetMultiplier: 2
-  _canvas: {fileID: 0}
-  _prevPole: {fileID: 0}
-  _prevGrapplingPole: {fileID: 0}
-  _minSwipeDistance: 75
-  _shurikan: {fileID: 5512512163095687918, guid: 4e160161d23171e419c6e910e54d6086,
-    type: 3}
+  _manager: {fileID: 0}
+  _resetCanvas: {fileID: 0}
+  _shurikan: {fileID: 0}
+  _jumpHeight: 3
+  _grappleHeight: -1
+  _grappleJumpOffset: 2
