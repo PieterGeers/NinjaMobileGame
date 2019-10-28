@@ -1285,6 +1285,37 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
+        type: 3}
+      propertyPath: _manager
+      value: 
+      objectReference: {fileID: 1702010467}
+    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
+        type: 3}
+      propertyPath: _resetCanvas
+      value: 
+      objectReference: {fileID: 1999562115}
+    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
+        type: 3}
+      propertyPath: _shurikan
+      value: 
+      objectReference: {fileID: 5512512163095687918, guid: 4e160161d23171e419c6e910e54d6086,
+        type: 3}
+    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
+        type: 3}
+      propertyPath: _jumpTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
+        type: 3}
+      propertyPath: _jumpHeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
+        type: 3}
+      propertyPath: _scoreForSpeedIncrease
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4408186290193548913, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1364,32 +1395,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Constraints
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
-        type: 3}
-      propertyPath: _manager
-      value: 
-      objectReference: {fileID: 1702010467}
-    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
-        type: 3}
-      propertyPath: _resetCanvas
-      value: 
-      objectReference: {fileID: 1999562115}
-    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
-        type: 3}
-      propertyPath: _shurikan
-      value: 
-      objectReference: {fileID: 5512512163095687918, guid: 4e160161d23171e419c6e910e54d6086,
-        type: 3}
-    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
-        type: 3}
-      propertyPath: _jumpTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7058889155494480259, guid: 0873d56d82ad44e47a88ef5d8fc5372d,
-        type: 3}
-      propertyPath: _jumpHeight
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -1752,6 +1757,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: PoleSpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
+        type: 3}
+      propertyPath: _chanceForGrappling.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
+        type: 3}
+      propertyPath: _pole
+      value: 
+      objectReference: {fileID: 5705906248687624013, guid: a35a918e1818ee54b826f1ac07132cbd,
+        type: 3}
+    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
+        type: 3}
+      propertyPath: _grapplePole
+      value: 
+      objectReference: {fileID: 8277147274897460722, guid: dece679be6a164447babe1be78d10e4d,
+        type: 3}
+    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
+        type: 3}
+      propertyPath: _nbOfPoles
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
+        type: 3}
+      propertyPath: _grappleChance.x
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 3890231671894755160, guid: f0ece616f3579ac4a9f3a516354d0efc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1806,33 +1838,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
-        type: 3}
-      propertyPath: _chanceForGrappling.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
-        type: 3}
-      propertyPath: _pole
-      value: 
-      objectReference: {fileID: 5705906248687624013, guid: a35a918e1818ee54b826f1ac07132cbd,
-        type: 3}
-    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
-        type: 3}
-      propertyPath: _grapplePole
-      value: 
-      objectReference: {fileID: 8277147274897460722, guid: dece679be6a164447babe1be78d10e4d,
-        type: 3}
-    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
-        type: 3}
-      propertyPath: _nbOfPoles
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3890231671894755167, guid: f0ece616f3579ac4a9f3a516354d0efc,
-        type: 3}
-      propertyPath: _grappleChance.x
-      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0ece616f3579ac4a9f3a516354d0efc, type: 3}
