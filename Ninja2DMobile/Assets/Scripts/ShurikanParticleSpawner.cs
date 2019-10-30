@@ -22,7 +22,6 @@ public class ShurikanParticleSpawner : MonoBehaviour
         }
         if (collision.gameObject.tag == "Foliage")
         {
-            Debug.Log("Leafs");
             GameObject Leafs = Instantiate(_leafsParticlePrefab);
             Leafs.transform.position = collision.transform.position;
             Leafs.GetComponent<ParticleSystem>().Play();
