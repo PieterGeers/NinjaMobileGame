@@ -14,6 +14,7 @@ public class Menu : MonoBehaviour
     void Start()
     {
         _isFaded = false;
+        _text = GetComponentInChildren<TMP_Text>();
     }
 
 
