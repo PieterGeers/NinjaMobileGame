@@ -610,6 +610,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Alida\PowerUps\PowerUpShurikan\ShurikanPowerUP.cs" />
+    <Compile Include="Assets\Alida\PowerUps\PowerUpSlowmo\Slowmotion.cs" />
     <Compile Include="Assets\Cem\Enemy\Scripts\EnemyRed.cs" />
     <Compile Include="Assets\Cem\UI\Player\Scripts\PlayerScreen.cs" />
     <Compile Include="Assets\Scripts\BirdSpawner.cs" />

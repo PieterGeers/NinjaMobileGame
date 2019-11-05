@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _resetCanvas = null;
     [SerializeField]
+    private GameObject _playingCanvas = null;
+    [SerializeField]
     private GameObject _shurikan = null;
     [SerializeField]
     private float _jumpHeight = 3f;
@@ -170,6 +172,7 @@ public class Player : MonoBehaviour
         {
             Time.timeScale = 0.0f;
             _resetCanvas.SetActive(true);
+            _playingCanvas.SetActive(false);
         }
     }
 
