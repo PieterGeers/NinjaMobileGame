@@ -4,25 +4,34 @@ using UnityEngine;
 
 public class ShurikanPowerUP : MonoBehaviour
 {
+    private float duration = 4;
+
+    Throwable Powerup = _powerup.GetComponent<Throwable>();
+
 
     void OnTriggerEnter2D(Collider2D Player1)
     {
         if (Player1.CompareTag("Player"))
         {
-            Pickup(Player1);
+            StartCoroutine(Pickup(Player1));
+            Powerup = true;
+
+
+
         }
-
-
     }
 
-    void Pickup(Collider2D player)
+    IEnumerator Pickup(Collider2D player)
     {
-       Debug.Log("Picked Up.");
 
-        //empty
+        //shuriken = GameObject.FindWithTag("Shuriken");
+
+        GetComponent<PolygonCollider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+
+
+        yield return new WaitForSeconds(duration);
 
         Destroy(gameObject);
     }
-
-
 }

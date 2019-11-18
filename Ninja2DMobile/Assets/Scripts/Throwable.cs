@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Throwable : MonoBehaviour
 {
+    public bool _powerup = false;
     private Vector2 _direction = Vector2.zero;
     private Rigidbody2D _rb = null;
     [SerializeField]
     private float _speed = 5.0f;
     [SerializeField]
     private float _timeToDestroy = 10.0f;
+
+
+   
 
     private void Awake()
     {
@@ -19,10 +23,24 @@ public class Throwable : MonoBehaviour
     /*Function SetDirection sets the travel direction and starts the movement of the shurikan*/
     public void SetDirection(Vector2 direction)
     {
-        _direction = direction;
-        _rb.AddForce(direction * _speed);
-        _rb.AddTorque(10);
-        Destroy(gameObject, _timeToDestroy);
+        if (_powerup == true)
+        {
+            for (int i = 0; i <= 2; i++)
+            {
+                _direction = direction;
+                _rb.AddForce(direction * _speed);
+                _rb.AddTorque(10);
+                Destroy(gameObject, _timeToDestroy);
+            }
+            _powerup = false;
+        }
+        else
+        {
+            _direction = direction;
+            _rb.AddForce(direction * _speed);
+            _rb.AddTorque(10);
+            Destroy(gameObject, _timeToDestroy);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
