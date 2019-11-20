@@ -6,7 +6,7 @@ public class ShurikanPowerUP : MonoBehaviour
 {
     private float duration = 4;
 
-    Throwable Powerup = _powerup.GetComponent<Throwable>();
+    //Throwable Powerup = _powerup.GetComponent<Throwable>();
 
 
     void OnTriggerEnter2D(Collider2D Player1)
@@ -14,7 +14,7 @@ public class ShurikanPowerUP : MonoBehaviour
         if (Player1.CompareTag("Player"))
         {
             StartCoroutine(Pickup(Player1));
-            Powerup = true;
+            //Powerup = true;
 
 
 
