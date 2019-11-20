@@ -25,6 +25,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private uint _scoreForSpeedIncrease = 10;
 
+    public bool PowerUpshurikan = false;
+
+  
 
     private Rigidbody2D _rb = null;
 
@@ -247,12 +250,17 @@ public class Player : MonoBehaviour
         shurikan.GetComponent<Throwable>().SetDirection(throwDirection);
     }
 
+
     private void HandleInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
             _pressPosition = Input.mousePosition;
             _pressed = true;
+        }
+        if (PowerUpshurikan == true)
+        {
+            Debug.Log("Picked Uppp");
         }
         else if (Input.GetMouseButtonUp(0))
         {
