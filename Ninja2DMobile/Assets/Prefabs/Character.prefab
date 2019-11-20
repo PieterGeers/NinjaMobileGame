@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4408186290193548912}
   - component: {fileID: 4408186290193548914}
   - component: {fileID: 4408186290193548915}
+  - component: {fileID: 6079881976550561389}
   - component: {fileID: 7058889155494480259}
   m_Layer: 0
   m_Name: Character
@@ -129,6 +130,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 5
+--- !u!114 &6079881976550561389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4408186290193548927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3003dab7733c73842a1e4c857a5368e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7058889155494480259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _manager: {fileID: 0}
   _resetCanvas: {fileID: 0}
+  _playingCanvas: {fileID: 0}
   _shurikan: {fileID: 0}
   _jumpHeight: 3
   _grappleHeight: -1
@@ -150,3 +164,4 @@ MonoBehaviour:
   _shurikanOffsetMult: 1.5
   _jumpTime: 1
   _scoreForSpeedIncrease: 10
+  PowerUpshurikan: 0

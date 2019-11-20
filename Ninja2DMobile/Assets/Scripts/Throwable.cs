@@ -32,7 +32,7 @@ public class Throwable : MonoBehaviour
         if (collision.tag == "DestroyablePole")
         {
             Destroy(collision.gameObject);
-            Destroy(collision.transform.parent.gameObject, 2f);
+            //Destroy(collision.transform.parent.gameObject, 2f);
             for (int i = 0; i < collision.transform.parent.childCount; ++i)
             {
                 BoxCollider2D bc = collision.transform.parent.GetChild(i).GetComponent<BoxCollider2D>();

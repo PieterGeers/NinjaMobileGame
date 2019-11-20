@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _playingCanvas = null;
     [SerializeField]
+    private GameObject _newHighscoreText = null;
+    [SerializeField]
     private GameObject _shurikan = null;
     [SerializeField]
     private float _jumpHeight = 3f;
@@ -24,10 +26,10 @@ public class Player : MonoBehaviour
     private float _jumpTime = 1f;
     [SerializeField]
     private uint _scoreForSpeedIncrease = 10;
+    [SerializeField]
+    private int _polesBehindCharacter = 2;
 
     public bool PowerUpshurikan = false;
-
-  
 
     private Rigidbody2D _rb = null;
 
@@ -104,8 +106,8 @@ public class Player : MonoBehaviour
 
     private void CalculateNormalJump()
     {
-        _jumpFromPosition = GetJumpToPosition(_manager.GetPole(1)).position;
-        _jumpToPosition = GetJumpToPosition(_manager.GetPole(2)).position;
+        _jumpFromPosition = GetJumpToPosition(_manager.GetPole(_polesBehindCharacter)).position;
+        _jumpToPosition = GetJumpToPosition(_manager.GetPole(_polesBehindCharacter + 1)).position;
 
         Vector2 start = new Vector2(_jumpFromPosition.x, _jumpFromPosition.y);
         Vector2 end = new Vector2(_jumpToPosition.x, _jumpToPosition.y);
@@ -120,9 +122,9 @@ public class Player : MonoBehaviour
     {
         _isGrappling = true;
 
-        _jumpFromPosition = GetJumpToPosition(_manager.GetPole(1)).position;
-        _jumpToPosition = GetJumpToPosition(_manager.GetPole(3)).position;
-        _grapplePole = _manager.GetPole(2);
+        _jumpFromPosition = GetJumpToPosition(_manager.GetPole(_polesBehindCharacter)).position;
+        _jumpToPosition = GetJumpToPosition(_manager.GetPole(_polesBehindCharacter + 2)).position;
+        _grapplePole = _manager.GetPole(_polesBehindCharacter + 1);
 
         Vector2 fase1start = new Vector2(_jumpFromPosition.x, _jumpFromPosition.y);
         Vector2 fase1middle = new Vector2(fase1start.x + _grappleJumpOffset, _jumpHeight);
@@ -166,14 +168,16 @@ public class Player : MonoBehaviour
                 _manager.SpawnNewPole();
             }
             _currentTime = 0f;
-            if (_manager.GetPole(2).tag == "DefaultPole")
+            if (_manager.GetPole(_polesBehindCharacter + 1).tag == "DefaultPole")
                 CalculateNormalJump();
-            else if (_manager.GetPole(2).tag == "GrapplingPole")
+            else if (_manager.GetPole(_polesBehindCharacter + 1).tag == "GrapplingPole")
                 CalculateGrapple();
         }
         else if (collision.gameObject.tag == "Dead" || collision.gameObject.tag == "OutOfBounds")
         {
             Time.timeScale = 0.0f;
+            if (gameObject.GetComponent<HighscoresScript>().EveluateScore(_score))
+                _newHighscoreText.SetActive(true);
             _resetCanvas.SetActive(true);
             _playingCanvas.SetActive(false);
         }
@@ -258,17 +262,18 @@ public class Player : MonoBehaviour
             _pressPosition = Input.mousePosition;
             _pressed = true;
         }
-        if (PowerUpshurikan == true)
-        {
-            Debug.Log("Picked Uppp");
-        }
         else if (Input.GetMouseButtonUp(0))
         {
             _releasePosition = Input.mousePosition;
             _pressed = false;
             if (Vector2.Distance(_pressPosition, _releasePosition) > _minDistanceForSwipe)
             {
-                ThrowShurikan();
+                //if (PowerUpshurikan)
+                //{
+                //    Debug.Log("Picked Uppp");
+                //}
+                //else
+                    ThrowShurikan();
             }
         }
     }

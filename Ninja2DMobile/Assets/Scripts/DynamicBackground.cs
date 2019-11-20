@@ -61,11 +61,11 @@ public class DynamicBackground : MonoBehaviour
         {
             l.transform.position += Vector3.left * _speed * Time.deltaTime * modifier;
         }
-        if (layer[1].transform.position.x < _mainCam.gameObject.transform.position.x)
+        if (layer[2].transform.position.x < _mainCam.gameObject.transform.position.x)
         {
             GameObject temp = layer[0];
             layer.Remove(layer[0]);
-            temp.transform.position = layer[1].transform.position + new Vector3(layer[1].GetComponent<SpriteRenderer>().bounds.size.x, 0, 0);
+            temp.transform.position = layer[2].transform.position + new Vector3(layer[2].GetComponent<SpriteRenderer>().bounds.size.x, 0, 0);
             layer.Add(temp);
         }
     }
