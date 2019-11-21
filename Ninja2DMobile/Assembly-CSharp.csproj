@@ -72,6 +72,8 @@
     <Compile Include="Assets\Scripts\DynamicBackground.cs" />
     <Compile Include="Assets\Scripts\DynamicCamera.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\EnemySpawner.cs" />
+    <Compile Include="Assets\Scripts\EnemySpawnerManager.cs" />
     <Compile Include="Assets\Scripts\ForegroundSpawner.cs" />
     <Compile Include="Assets\Scripts\GameState.cs" />
     <Compile Include="Assets\Scripts\HighscoresData.cs" />
@@ -107,8 +109,14 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.VSCode.Editor">
+      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
@@ -116,26 +124,11 @@
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Tilemap.Editor">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
@@ -310,15 +303,6 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Editor">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.13f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

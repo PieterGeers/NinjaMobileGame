@@ -262,6 +262,7 @@ public class Player : MonoBehaviour
             _pressPosition = Input.mousePosition;
             _pressed = true;
         }
+
         else if (Input.GetMouseButtonUp(0))
         {
             _releasePosition = Input.mousePosition;

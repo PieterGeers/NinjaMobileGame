@@ -1,75 +1,51 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class Enemy : MonoBehaviour
 {
-    public float EnemySpeed;
-    private Transform _target;
-    private bool _isEnemyAlive;
-    private int _enemyHealth;
-    float randomPosY;
-    float randomPosX;
-    private TextMeshProUGUI _textLives;
-   
-    void Start()
+    private GameObject _target;
+    private int _enemyHealth = 2;
+    private float _enemySpeed = 4.0f;
+    private bool _isAlive = true;
+
+    public void SetVariables(int health, float speed)
     {
-        _target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        _textLives = gameObject.GetComponentInChildren<TextMeshProUGUI>();
-
-
-        _isEnemyAlive = false;
-        
+        _enemyHealth = health;
+        _enemySpeed = speed;
     }
 
-   
-
-    void Update()
+    private void Start()
     {
-        if (_isEnemyAlive)
-        {
-            
-            transform.position = Vector2.MoveTowards(transform.position, _target.position, EnemySpeed * Time.deltaTime);
-            _textLives.text = _enemyHealth.ToString();
-        }
-        else
-        {
-            Invoke("Respawn", Random.Range(3.0f, 5.0f));
-        }
- 
+        _target = GameObject.FindGameObjectWithTag("Player");       
     }
 
-
-
-    void Respawn()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        randomPosX = Random.Range(20, 25);
-        randomPosY = Random.Range(-5, 10);
-        _enemyHealth = Random.Range(3, 8);
-        _textLives.text = _enemyHealth.ToString();
-        transform.position = new Vector2(randomPosX + _target.position.x, randomPosY + _target.position.y);
-        gameObject.SetActive(true);
-        _isEnemyAlive = true;
-    }
-
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Shuriken")
+        if (collision.transform.tag == "Shuriken")
         {
-            if (_enemyHealth >= 1 )
+            if (_enemyHealth > 1)
             {
                 --_enemyHealth;
             }
-            else if (_enemyHealth == 0)
+            else
             {
-                _isEnemyAlive = false;
-                gameObject.SetActive(false);
+                _isAlive = false;
+                Destroy(gameObject.GetComponent<BoxCollider2D>());
+                Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
+                rb.AddForce(new Vector2(1, 0) * 100);
+                rb.AddTorque(-500f);
+                Destroy(gameObject, 5);
+                //play dead animation
             }
+
+            Destroy(collision.gameObject);
         }
     }
 
-
+    void Update()
+    {
+        if (_isAlive)
+            transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, _enemySpeed * Time.deltaTime);
+    }
 }
