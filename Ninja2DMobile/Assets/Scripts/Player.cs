@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
 
     private GameObject _grapplePole = null;
 
+    private Camera _camera = null;
+
     private Vector3 _fase1param = Vector3.zero;
     private Vector3 _fase2param = Vector3.zero;
     private Vector3 _fase3param = Vector3.zero;
@@ -175,17 +177,31 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Dead" || collision.gameObject.tag == "OutOfBounds")
         {
-            Time.timeScale = 0.0f;
-            if (gameObject.GetComponent<HighscoresScript>().EveluateScore(_score))
-                _newHighscoreText.SetActive(true);
-            _resetCanvas.SetActive(true);
-            _playingCanvas.SetActive(false);
+            Dead();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Dead();
+        }
+    }
+
+    private void Dead()
+    {
+        Time.timeScale = 0.0f;
+        if (gameObject.GetComponent<HighscoresScript>().EveluateScore(_score))
+            _newHighscoreText.SetActive(true);
+        _resetCanvas.SetActive(true);
+        _playingCanvas.SetActive(false);
     }
 
     private void Start()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
+        _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     private Vector3 NewMovePosition(Vector3 param, Vector3 frompos, Vector3 topos, float currenttime, float time)
@@ -200,7 +216,8 @@ public class Player : MonoBehaviour
         if (_start)
         {
             //Input
-            HandleInput();
+            if (Time.timeScale > 0)
+                HandleInput();
             //Time update
             _currentTime += Time.deltaTime;
             //Normal jump position update
@@ -248,7 +265,8 @@ public class Player : MonoBehaviour
 
     private void ThrowShurikan()
     {
-        Vector2 throwDirection = new Vector2(_releasePosition.x - _pressPosition.y, _releasePosition.y - _pressPosition.y).normalized;
+        Vector3 playerPosition = _camera.WorldToScreenPoint(transform.position);
+        Vector2 throwDirection = new Vector2(_releasePosition.x - playerPosition.y, _releasePosition.y - playerPosition.y).normalized;
         GameObject shurikan = Instantiate(_shurikan);
         shurikan.transform.position = transform.position + (new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMult);
         shurikan.GetComponent<Throwable>().SetDirection(throwDirection);

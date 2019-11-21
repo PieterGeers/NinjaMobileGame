@@ -12,6 +12,7 @@ TagManager:
   - OutOfBounds
   - Shuriken
   - Position
+  - Enemy
   layers:
   - Default
   - TransparentFX

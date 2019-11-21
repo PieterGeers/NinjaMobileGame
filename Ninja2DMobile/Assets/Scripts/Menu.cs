@@ -42,4 +42,9 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene("Landscape");
     }
+
+    public void TestClick()
+    {
+        Debug.Log("click");
+    }
 }
