@@ -15,8 +15,6 @@ public class ShurikanPowerUP : MonoBehaviour
 
     private void Pickup(Player player)
     {
-        //player = GameObject.Find("PowerUpshurikan").GetComponent<Player>();
-
         Debug.Log("Picked up");
 
         player.PowerUpshurikan = true;
@@ -24,7 +22,6 @@ public class ShurikanPowerUP : MonoBehaviour
         GetComponent<CircleCollider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
 
-        
         Destroy(gameObject);
     }
 }
