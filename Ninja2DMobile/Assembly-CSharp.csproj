@@ -67,6 +67,7 @@
     <Compile Include="Assets\Alida\PowerUps\PowerUpSlowmo\Slowmotion.cs" />
     <Compile Include="Assets\Cem\Enemy\Scripts\EnemyRed.cs" />
     <Compile Include="Assets\Cem\UI\Player\Scripts\PlayerScreen.cs" />
+    <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\BirdSpawner.cs" />
     <Compile Include="Assets\Scripts\Destroyable.cs" />
     <Compile Include="Assets\Scripts\DynamicBackground.cs" />
@@ -85,6 +86,9 @@
     <Compile Include="Assets\Scripts\Rope.cs" />
     <Compile Include="Assets\Scripts\SaveSystem.cs" />
     <Compile Include="Assets\Scripts\ShurikanParticleSpawner.cs" />
+    <Compile Include="Assets\Scripts\Sound.cs" />
+    <Compile Include="Assets\Scripts\SoundButtons.cs" />
+    <Compile Include="Assets\Scripts\SoundData.cs" />
     <Compile Include="Assets\Scripts\Throwable.cs" />
     <None Include="Assets\Shader\Blur.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-[System.Serializable]
+﻿[System.Serializable]
 public class HighscoresData
 {
     public int[] HighScores = new int[5];

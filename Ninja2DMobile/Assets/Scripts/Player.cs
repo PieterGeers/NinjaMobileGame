@@ -274,6 +274,7 @@ public class Player : MonoBehaviour
 
     private void ThrowShurikan(int idx)
     {
+        AudioManager.instance.PlaySoundEffect("ThrowShurikan");
         Vector3 playerPosition = _camera.WorldToScreenPoint(transform.position);
         Vector2 throwDirection = new Vector2(_endTouches[idx].x - playerPosition.y, _endTouches[idx].y - playerPosition.y).normalized;
         GameObject shurikan = Instantiate(_shurikan);

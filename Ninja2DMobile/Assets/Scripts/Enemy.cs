@@ -34,6 +34,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
+                AudioManager.instance.PlaySoundEffect("EnemyDead");
                 _isAlive = false;
                 _animator.SetBool("Dead", true);
                 Destroy(gameObject.GetComponent<BoxCollider2D>());

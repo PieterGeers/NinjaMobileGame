@@ -6,17 +6,20 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
     //Fader Text 'Tap to start'
+    [SerializeField] 
+    private TMP_Text _text;
+
     private bool _isFaded;
     private float _alpha;
-    [SerializeField] private TMP_Text _text;
-
 
     void Start()
     {
+        if (!AudioManager.instance.IsSongPlaying("Background"))
+            AudioManager.instance.PlaySong("Background");
+
         _isFaded = false;
         _text = GetComponentInChildren<TMP_Text>();
     }
-
 
     void Update()
     {
