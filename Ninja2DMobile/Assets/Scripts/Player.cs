@@ -40,16 +40,16 @@ public class Player : MonoBehaviour
     private Vector3 _fase1param = Vector3.zero;
     private Vector3 _fase2param = Vector3.zero;
     private Vector3 _fase3param = Vector3.zero;
-    private Vector3 _pressPosition = Vector3.zero;
-    private Vector3 _releasePosition = Vector3.zero;
     private Vector3 _jumpFromPosition = Vector3.zero;
     private Vector3 _jumpToPosition = Vector3.zero;
+    private Vector3[] _startTouches = new Vector3[5];
+    private Vector3[] _endTouches = new Vector3[5];
+    private bool[] _tap = new bool[5] { false, false, false, false, false};    
 
     private uint _score = 0;
 
     private bool _start = false;
     private bool _isGrappling = false;
-    private bool _pressed = false;
     private bool _failedToGrapple = false;
 
     private float _minDistanceForSwipe = 75f;
@@ -242,14 +242,23 @@ public class Player : MonoBehaviour
                                                   _jumpToPosition,
                                                   _currentTime - (_jumpTime + (_jumpTime / 2.0f)),
                                                   _jumpTime / 2.0f);
-                else if (_pressed && !_failedToGrapple)
-                    newPosition = NewMovePosition(_fase2param,
-                                                  new Vector3(_jumpFromPosition.x + _grappleJumpOffset, _jumpHeight, 0),
-                                                  new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0),
-                                                  _currentTime - (_jumpTime / 2.0f),
-                                                  _jumpTime);
                 else if (!_failedToGrapple)
+                {
                     _failedToGrapple = true;
+                    for (uint i = 0; i < 5; ++i)
+                    {
+                        if (_tap[i])
+                        {
+                            newPosition = NewMovePosition(_fase2param,
+                              new Vector3(_jumpFromPosition.x + _grappleJumpOffset, _jumpHeight, 0),
+                              new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0),
+                              _currentTime - (_jumpTime / 2.0f),
+                              _jumpTime);
+                            _failedToGrapple = false;
+                            
+                        }
+                    }
+                }                    
                 if (!_failedToGrapple)
                 {
                     _rb.MovePosition(newPosition);
@@ -263,36 +272,49 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ThrowShurikan()
+    private void ThrowShurikan(int idx)
     {
         Vector3 playerPosition = _camera.WorldToScreenPoint(transform.position);
-        Vector2 throwDirection = new Vector2(_releasePosition.x - playerPosition.y, _releasePosition.y - playerPosition.y).normalized;
+        Vector2 throwDirection = new Vector2(_endTouches[idx].x - playerPosition.y, _endTouches[idx].y - playerPosition.y).normalized;
         GameObject shurikan = Instantiate(_shurikan);
         shurikan.transform.position = transform.position + (new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMult);
         shurikan.GetComponent<Throwable>().SetDirection(throwDirection);
     }
 
+    private void CheckThrow(int idx)
+    {
+        if (Vector2.Distance(_startTouches[idx], _endTouches[idx]) > _minDistanceForSwipe)
+        {
+            //if (PowerUpshurikan)
+            //{
+            //    Debug.Log("Picked Uppp");
+            //}
+            //else
+            ThrowShurikan(idx);
+        }
+    }
 
     private void HandleInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.touchCount > 0)
         {
-            _pressPosition = Input.mousePosition;
-            _pressed = true;
-        }
-
-        else if (Input.GetMouseButtonUp(0))
-        {
-            _releasePosition = Input.mousePosition;
-            _pressed = false;
-            if (Vector2.Distance(_pressPosition, _releasePosition) > _minDistanceForSwipe)
+            int touchCount = Input.touchCount;
+            if (touchCount > 5)
+                touchCount = 5;
+            for (int i = 0; i < touchCount; ++i)
             {
-                //if (PowerUpshurikan)
-                //{
-                //    Debug.Log("Picked Uppp");
-                //}
-                //else
-                    ThrowShurikan();
+                Touch current = Input.touches[i];
+                if (current.phase == TouchPhase.Began)
+                {
+                    _startTouches[current.fingerId] = Input.touches[i].position;
+                    _tap[current.fingerId] = true;
+                }
+                else if (current.phase == TouchPhase.Ended || current.phase == TouchPhase.Canceled)
+                {
+                    _endTouches[current.fingerId] = Input.touches[i].position;
+                    _tap[current.fingerId] = false;
+                    CheckThrow(current.fingerId);
+                }
             }
         }
     }
