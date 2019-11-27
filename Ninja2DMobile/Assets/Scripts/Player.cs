@@ -29,7 +29,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _polesBehindCharacter = 2;
 
-    public bool PowerUpshurikan = false;
+    public bool TrippleShotPU = false;
+    public bool SuperBreakerPU = false;
+    public bool InstaKillPU = false;
 
     private Rigidbody2D _rb = null;
 
@@ -44,7 +46,9 @@ public class Player : MonoBehaviour
     private Vector3 _jumpToPosition = Vector3.zero;
     private Vector3[] _startTouches = new Vector3[5];
     private Vector3[] _endTouches = new Vector3[5];
-    private bool[] _tap = new bool[5] { false, false, false, false, false};    
+    private bool[] _tap = new bool[5] { false, false, false, false, false };
+
+    private int _index = 0;
 
     private uint _score = 0;
 
@@ -143,13 +147,13 @@ public class Player : MonoBehaviour
         _fase1param = QuadraticParametersFromPoints(fase1start, fase1middle, fase1end);
         _fase2param = QuadraticParametersFromPoints(fase2start, fase2middle, fase2end);
         _fase3param = QuadraticParametersFromPoints(fase3start, fase3middle, fase3end);
-        
+
         _manager.SpawnNewPole();
     }
 
     private void CheckSpeedIncrease()
     {
-        if (_score % _scoreForSpeedIncrease == 0 && _jumpTime > _maxSpeed) 
+        if (_score % _scoreForSpeedIncrease == 0 && _jumpTime > _maxSpeed)
         {
             _jumpTime -= _speedIncrease;
             _jumpTime = Mathf.Round(_jumpTime * 10f) / 10f;
@@ -175,7 +179,7 @@ public class Player : MonoBehaviour
             else if (_manager.GetPole(_polesBehindCharacter + 1).tag == "GrapplingPole")
                 CalculateGrapple();
         }
-        else if (collision.gameObject.tag == "Dead" || collision.gameObject.tag == "OutOfBounds")
+        else if (collision.gameObject.tag == "Dead" || collision.gameObject.tag == "OutOfBounds" || collision.gameObject.tag == "Obstacle")
         {
             Dead();
         }
@@ -280,18 +284,42 @@ public class Player : MonoBehaviour
         GameObject shurikan = Instantiate(_shurikan);
         shurikan.transform.position = transform.position + (new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMult);
         shurikan.GetComponent<Throwable>().SetDirection(throwDirection);
+        shurikan.GetComponent<Throwable>().InstantKill = InstaKillPU;
+        shurikan.GetComponent<Throwable>().SuperBreakerActive = SuperBreakerPU;
+    }
+
+    private void ThrowShurikan()
+    {
+        AudioManager.instance.PlaySoundEffect("ThrowShurikan");
+        Vector3 playerPosition = _camera.WorldToScreenPoint(transform.position);
+        Vector2 throwDirection = new Vector2(_endTouches[_index].x - playerPosition.y, _endTouches[_index].y - playerPosition.y).normalized;
+        GameObject shurikan = Instantiate(_shurikan);
+        shurikan.transform.position = transform.position + (new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMult);
+        shurikan.GetComponent<Throwable>().SetDirection(throwDirection);
+        shurikan.GetComponent<Throwable>().InstantKill = InstaKillPU;
+        shurikan.GetComponent<Throwable>().SuperBreakerActive = SuperBreakerPU;
+    }
+
+
+    private void ThrowTripleShurikan()
+    {
+        ThrowShurikan();
+        Invoke("ThrowShurikan", 0.15f);
+        Invoke("ThrowShurikan", 0.30f);
     }
 
     private void CheckThrow(int idx)
     {
         if (Vector2.Distance(_startTouches[idx], _endTouches[idx]) > _minDistanceForSwipe)
         {
-            //if (PowerUpshurikan)
-            //{
-            //    Debug.Log("Picked Uppp");
-            //}
-            //else
-            ThrowShurikan(idx);
+            if (TrippleShotPU)
+            {
+                TrippleShotPU = false;
+                _index = idx;
+                ThrowTripleShurikan();
+            }
+            else
+                ThrowShurikan(idx);
         }
     }
 
@@ -317,6 +345,17 @@ public class Player : MonoBehaviour
                     CheckThrow(current.fingerId);
                 }
             }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            _startTouches[0] = Input.mousePosition;
+            _tap[0] = true;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            _endTouches[0] = Input.mousePosition;
+            _tap[0] = false;
+            CheckThrow(0);
         }
     }
 }

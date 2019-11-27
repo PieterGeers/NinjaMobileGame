@@ -5,6 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class GameState : MonoBehaviour
 {
+    private void Start()
+    {
+        if (!AudioManager.instance.IsSongPlaying("GamePlay"))
+        {
+            AudioManager.instance.StopSong("MainMenu");
+            AudioManager.instance.PlaySong("GamePlay");
+        }
+    }
+
     public void Restart()
     {
         Time.timeScale = 1.0f;

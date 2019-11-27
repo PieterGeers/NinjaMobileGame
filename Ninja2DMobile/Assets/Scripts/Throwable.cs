@@ -11,6 +11,8 @@ public class Throwable : MonoBehaviour
     private float _speed = 5.0f;
     [SerializeField]
     private float _timeToDestroy = 10.0f;
+    public bool SuperBreakerActive = false;
+    public bool InstantKill = false;
 
     private void Awake()
     {
@@ -32,7 +34,6 @@ public class Throwable : MonoBehaviour
         if (collision.tag == "DestroyablePole")
         {
             Destroy(collision.gameObject);
-            //Destroy(collision.transform.parent.gameObject, 2f);
             for (int i = 0; i < collision.transform.parent.childCount; ++i)
             {
                 BoxCollider2D bc = collision.transform.parent.GetChild(i).GetComponent<BoxCollider2D>();
@@ -40,18 +41,18 @@ public class Throwable : MonoBehaviour
                     bc.enabled = false;
             }
 
-            gameObject.GetComponent<CircleCollider2D>().enabled = false;
-            _rb.AddForce(new Vector3(-1,0,0) * _speed / 2f);
+            if (!SuperBreakerActive)
+            {
+                gameObject.GetComponent<CircleCollider2D>().enabled = false;
+                _rb.AddForce(new Vector3(-1, 0, 0) * _speed / 2f);
+            }
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.transform.tag == "Obstacle")
+            AudioManager.instance.PlaySoundEffect("Wood");
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
-    }
-
-    private void EnableCollider()
-    {
-        gameObject.GetComponent<CircleCollider2D>().enabled = true;
     }
 }

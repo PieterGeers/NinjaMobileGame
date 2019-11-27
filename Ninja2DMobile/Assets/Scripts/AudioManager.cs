@@ -62,13 +62,11 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySong(string name)
     {
-        if (canPlaySongs)
-        {
-            Sound s = Array.Find(songs, sound => sound.name == name);
-            if (s == null)
-                return;
-            s.source.Play();
-        }
+        Sound s = Array.Find(songs, sound => sound.name == name);
+        if (s == null)
+            return;
+        s.source.Play();
+        s.source.mute = !canPlaySongs;
     }
 
     public void ChangeEffect()
@@ -101,5 +99,12 @@ public class AudioManager : MonoBehaviour
         if (s == null)
             return false;
         return s.source.isPlaying;
+    }
+
+    public void StopSong(string name)
+    {
+        Sound s = Array.Find(songs, sound => sound.name == name);
+        if (s != null)
+            s.source.Stop();
     }
 }

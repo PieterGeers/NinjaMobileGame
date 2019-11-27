@@ -63,13 +63,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Alida\PowerUps\PowerUpShurikan\ShurikanPowerUP.cs" />
-    <Compile Include="Assets\Alida\PowerUps\PowerUpSlowmo\Slowmotion.cs" />
     <Compile Include="Assets\Cem\Enemy\Scripts\EnemyRed.cs" />
     <Compile Include="Assets\Cem\UI\Player\Scripts\PlayerScreen.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\BirdSpawner.cs" />
     <Compile Include="Assets\Scripts\Destroyable.cs" />
+    <Compile Include="Assets\Scripts\DisplayHighScores.cs" />
     <Compile Include="Assets\Scripts\DynamicBackground.cs" />
     <Compile Include="Assets\Scripts\DynamicCamera.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
@@ -83,6 +82,10 @@
     <Compile Include="Assets\Scripts\MoveObject.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PoleManager.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\InstaKillPU.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\SlowmotionPU.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\SuperBreakerPU.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\TripleShotPU.cs" />
     <Compile Include="Assets\Scripts\Rope.cs" />
     <Compile Include="Assets\Scripts\SaveSystem.cs" />
     <Compile Include="Assets\Scripts\ShurikanParticleSpawner.cs" />
@@ -106,7 +109,6 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\Audio\empty.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />

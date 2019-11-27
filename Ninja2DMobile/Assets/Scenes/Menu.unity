@@ -578,6 +578,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 1
+      - m_Target: {fileID: 1805695605}
+        m_MethodName: Display
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &523430406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -963,8 +974,8 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Highscores
 --- !u!222 &653732021
@@ -1362,10 +1373,40 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: Bush
+    clip: {fileID: 8300000, guid: 33ae2b5ee2ef2574c8e0bcbb107ac448, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: PlayButton
+    clip: {fileID: 8300000, guid: ed405cdc119272b4ab19bfc2da234a59, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Chain
+    clip: {fileID: 8300000, guid: 803e20dafdb5a624ca214373f592cee3, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Wood
+    clip: {fileID: 8300000, guid: 423bece9301b0f44bbefab216eb82735, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
   songs:
-  - name: Background
-    clip: {fileID: 8300000, guid: 212fb3de72788584ebcc07bbc91098d6, type: 3}
-    volume: 0.25
+  - name: MainMenu
+    clip: {fileID: 8300000, guid: 3dea3a005ff8eb2488a1a10544328221, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: GamePlay
+    clip: {fileID: 8300000, guid: 4c008ff18076c934b8914f8cda5d13c0, type: 3}
+    volume: 0.5
     pitch: 1
     loop: 1
     source: {fileID: 0}
@@ -1777,6 +1818,7 @@ GameObject:
   - component: {fileID: 1805695602}
   - component: {fileID: 1805695604}
   - component: {fileID: 1805695603}
+  - component: {fileID: 1805695605}
   m_Layer: 5
   m_Name: HighScoreMenu
   m_TagString: Untagged
@@ -1841,6 +1883,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1805695601}
   m_CullTransparentMesh: 0
+--- !u!114 &1805695605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805695601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2c26a142553d60478638d8b364bb814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 653732020}
 --- !u!1 &2104895986
 GameObject:
   m_ObjectHideFlags: 0

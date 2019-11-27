@@ -14,8 +14,11 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
-        if (!AudioManager.instance.IsSongPlaying("Background"))
-            AudioManager.instance.PlaySong("Background");
+        if (!AudioManager.instance.IsSongPlaying("MainMenu"))
+        {
+            AudioManager.instance.StopSong("GamePlay");
+            AudioManager.instance.PlaySong("MainMenu");
+        }
 
         _isFaded = false;
         _text = GetComponentInChildren<TMP_Text>();
@@ -43,6 +46,7 @@ public class Menu : MonoBehaviour
 
     public void PlayGame()
     {
+        AudioManager.instance.PlaySoundEffect("PlayButton");
         SceneManager.LoadScene("Landscape");
     }
 

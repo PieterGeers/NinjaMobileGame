@@ -26,7 +26,12 @@ public class Enemy : MonoBehaviour
     {
         if (collision.transform.tag == "Shuriken")
         {
-            if (_enemyHealth > 1)
+            if (collision.GetComponent<Throwable>().InstantKill)
+            {
+                Dead();
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().InstaKillPU = false;
+            }
+            else if (_enemyHealth > 1)
             {
                 --_enemyHealth;
                 GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
@@ -34,18 +39,23 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                AudioManager.instance.PlaySoundEffect("EnemyDead");
-                _isAlive = false;
-                _animator.SetBool("Dead", true);
-                Destroy(gameObject.GetComponent<BoxCollider2D>());
-                Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
-                rb.AddForce(new Vector2(1, 0) * 100);
-                rb.AddTorque(-500f);
-                Destroy(gameObject, 5);
+                Dead();
             }
 
             Destroy(collision.gameObject);
         }
+    }
+
+    private void Dead()
+    {
+        AudioManager.instance.PlaySoundEffect("EnemyDead");
+        _isAlive = false;
+        _animator.SetBool("Dead", true);
+        Destroy(gameObject.GetComponent<BoxCollider2D>());
+        Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
+        rb.AddForce(new Vector2(1, 0) * 100);
+        rb.AddTorque(-500f);
+        Destroy(gameObject, 5);
     }
 
     private void Default()

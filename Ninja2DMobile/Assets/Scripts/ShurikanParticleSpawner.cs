@@ -15,6 +15,7 @@ public class ShurikanParticleSpawner : MonoBehaviour
     {
         if (collision.gameObject.tag == "DestroyablePole")
         {
+            AudioManager.instance.PlaySoundEffect("Chain");
             GameObject sparks = Instantiate(_sparksParticlePrefab);
             sparks.transform.position = collision.transform.position;
             sparks.GetComponent<ParticleSystem>().Play();
@@ -22,6 +23,7 @@ public class ShurikanParticleSpawner : MonoBehaviour
         }
         if (collision.gameObject.tag == "Foliage")
         {
+            AudioManager.instance.PlaySoundEffect("Bush");
             GameObject Leafs = Instantiate(_leafsParticlePrefab);
             Leafs.transform.position = collision.transform.position;
             Leafs.GetComponent<ParticleSystem>().Play();
