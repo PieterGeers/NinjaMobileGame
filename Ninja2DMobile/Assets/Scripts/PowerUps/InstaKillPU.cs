@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class InstaKillPU : MonoBehaviour
 {
+    public PowerUpManager PM;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             Pickup(collision.transform.GetComponent<Player>());
+            PM.ActiveInstaKill();
         }
     }
 

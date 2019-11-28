@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class TripleShotPU : MonoBehaviour
 {
+    public PowerUpManager PM;
+
     void OnTriggerEnter2D(Collider2D Player1)
     {
         if (Player1.CompareTag("Player"))
         {
             Pickup(Player1.transform.GetComponent<Player>());
+            PM.ActiveTripleShot();
         }
     }
     

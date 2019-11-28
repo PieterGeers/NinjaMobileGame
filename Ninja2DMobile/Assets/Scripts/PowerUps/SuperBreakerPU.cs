@@ -7,11 +7,14 @@ public class SuperBreakerPU : MonoBehaviour
     private float duration = 10;
     private Player _player;
 
+    public PowerUpManager PM;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             Pickup(collision.transform.GetComponent<Player>());
+            PM.ActiveSuperBreaker();
         }
     }
 
@@ -25,11 +28,12 @@ public class SuperBreakerPU : MonoBehaviour
 
         Invoke("Before", duration);
 
-        Destroy(gameObject);
     }
 
     private void Before()
     {
+        PM.InactiveSuperBreaker();
         _player.SuperBreakerPU = false;
+        Destroy(gameObject);
     }
 }
