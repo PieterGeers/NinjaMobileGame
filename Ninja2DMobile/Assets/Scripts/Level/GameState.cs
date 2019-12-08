@@ -16,8 +16,13 @@ public class GameState : MonoBehaviour
 
     public void Restart()
     {
-        Time.timeScale = 1.0f;
+        AdManager.Instance.IncreaseTimesPlayed();
         SceneManager.LoadScene(1);
+    }
+
+    public void WatchRewardedVideo()
+    {
+        AdManager.Instance.WatchAdToContinue();
     }
 
     public void Pause()
@@ -32,6 +37,7 @@ public class GameState : MonoBehaviour
 
     public void ReturnHome()
     {
+        AdManager.Instance.Home();
         SceneManager.LoadScene("Menu");
     }
 }

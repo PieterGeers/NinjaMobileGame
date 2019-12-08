@@ -18,6 +18,8 @@ public class TripleShotPU : MonoBehaviour
 
     private void Pickup(Player player)
     {
+        AudioManager.instance.PlaySoundEffect("PowerUp");
+
         player.TrippleShotPU = true;
 
         GetComponent<CircleCollider2D>().enabled = false;

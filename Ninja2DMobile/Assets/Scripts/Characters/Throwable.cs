@@ -60,6 +60,10 @@ public class Throwable : MonoBehaviour
             gameObject.transform.parent = collision.transform;
             _rb.simulated = false;
         }
+        if (collision.transform.tag == "DefaultPole")
+        {
+            AudioManager.instance.PlaySoundEffect("Stone");
+        }
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
     }
 

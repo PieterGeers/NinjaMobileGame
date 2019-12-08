@@ -63,8 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Cem\Enemy\Scripts\EnemyRed.cs" />
-    <Compile Include="Assets\Cem\UI\Player\Scripts\PlayerScreen.cs" />
+    <Compile Include="Assets\Scripts\Ads\AdManager.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Audio\Sound.cs" />
     <Compile Include="Assets\Scripts\Audio\SoundButtons.cs" />
@@ -86,8 +85,9 @@
     <Compile Include="Assets\Scripts\Level\Rope.cs" />
     <Compile Include="Assets\Scripts\Menu\DisplayHighScores.cs" />
     <Compile Include="Assets\Scripts\Menu\Menu.cs" />
-    <Compile Include="Assets\Scripts\PowerUpManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\PlayerScreen.cs" />
     <Compile Include="Assets\Scripts\PowerUps\InstaKillPU.cs" />
+    <Compile Include="Assets\Scripts\PowerUps\PowerUpManager.cs" />
     <Compile Include="Assets\Scripts\PowerUps\SlowmotionPU.cs" />
     <Compile Include="Assets\Scripts\PowerUps\SuperBreakerPU.cs" />
     <Compile Include="Assets\Scripts\PowerUps\TripleShotPU.cs" />
@@ -99,6 +99,7 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\UnityAds\link.xml" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
@@ -310,6 +311,12 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Advertisements.Editor">
+      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Assets/UnityAds/UnityEngine.Advertisements.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Monetization.Editor">
+      <HintPath>C:/Users/pgeer/Desktop/NinjaMobileGame/Ninja2DMobile/Assets/UnityAds/UnityEngine.Monetization.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.13f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

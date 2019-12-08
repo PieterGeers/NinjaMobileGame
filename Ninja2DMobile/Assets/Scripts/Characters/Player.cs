@@ -7,11 +7,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PoleManager _manager = null;
     [SerializeField]
-    private GameObject _resetCanvas = null;
+    private GameObject[] _resetCanvas = new GameObject[2];
     [SerializeField]
     private GameObject _playingCanvas = null;
     [SerializeField]
-    private GameObject _newHighscoreText = null;
+    private GameObject[] _newHighscoreText = new GameObject[2];
     [SerializeField]
     private GameObject _shurikan = null;
     [SerializeField]
@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D _rb = null;
 
+    private Animator _am = null;
+
     private GameObject _grapplePole = null;
 
     private Camera _camera = null;
@@ -44,23 +46,29 @@ public class Player : MonoBehaviour
     private Vector3 _fase3param = Vector3.zero;
     private Vector3 _jumpFromPosition = Vector3.zero;
     private Vector3 _jumpToPosition = Vector3.zero;
-    private Vector3[] _startTouches = new Vector3[5];
-    private Vector3[] _endTouches = new Vector3[5];
-    private bool[] _tap = new bool[5] { false, false, false, false, false };
+    private Vector3[] _startTouches = new Vector3[2];
+    private Vector3[] _endTouches = new Vector3[2];
+    private bool[] _tap = new bool[2] { false, false };
 
     private int _index = 0;
+    private int _staticValue = 10;
 
     private uint _score = 0;
 
     private bool _start = false;
     private bool _isGrappling = false;
+    private bool _canGrapple = true;
     private bool _failedToGrapple = false;
-    private bool _wasResumedPressed = false;
+    private bool _wasGamePaused = false;
 
     private float _minDistanceForSwipe = 75f;
     private float _currentTime = 0f;
     private float _maxSpeed = 0.5f;
     private float _speedIncrease = 0.1f;
+    private float _previousYPosition = 0f;
+    private float _currentYPosition = 0f;
+    private float _Ydiff = 0f;
+
 
     private Vector3 QuadraticParametersFromPoints(Vector2 p1, Vector2 p2, Vector2 p3) //chronologic points
     {
@@ -80,7 +88,7 @@ public class Player : MonoBehaviour
     {
         if (_grapplePole != null)
         {
-            Vector3[] positions = new Vector3[2] { transform.position, GetJumpToPosition(_grapplePole).transform.position };
+            Vector3[] positions = new Vector3[2] { transform.GetChild(0).transform.position, GetJumpToPosition(_grapplePole).transform.position };
             _grapplePole.GetComponent<LineRenderer>().SetPositions(positions);
         }
     }
@@ -94,14 +102,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public uint GetScore()
-    {
-        return _score;
-    }
-
     public void SetBoolResume()
     {
-        _wasResumedPressed = true;
+        _wasGamePaused = true;
     }
 
     private Transform GetJumpToPosition(GameObject pole)
@@ -201,17 +204,34 @@ public class Player : MonoBehaviour
 
     private void Dead()
     {
+        _am.SetBool("Dead", true);
         Time.timeScale = 0.0f;
         if (gameObject.GetComponent<HighscoresScript>().EveluateScore(_score))
-            _newHighscoreText.SetActive(true);
-        _resetCanvas.SetActive(true);
+        {
+            if (AdManager.Instance.HasWatchedAd)
+                _newHighscoreText[1].SetActive(true);
+            else
+                _newHighscoreText[0].SetActive(true);
+
+        }
+        if (AdManager.Instance.HasWatchedAd)
+            _resetCanvas[1].SetActive(true);
+        else
+            _resetCanvas[0].SetActive(true);
         _playingCanvas.SetActive(false);
     }
 
     private void Start()
     {
+        if (AdManager.Instance.HasWatchedAd)
+        {
+            _score = AdManager.Instance.Score;
+            _jumpTime = AdManager.Instance.JumpTime;
+        }
+        _am = gameObject.GetComponent<Animator>();
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        _currentYPosition = transform.position.y + _staticValue;
     }
 
     private Vector3 NewMovePosition(Vector3 param, Vector3 frompos, Vector3 topos, float currenttime, float time)
@@ -225,6 +245,11 @@ public class Player : MonoBehaviour
     {
         if (_start)
         {
+            //Animator update
+            _previousYPosition = _currentYPosition;
+            _currentYPosition = transform.position.y + _staticValue;
+            _Ydiff = _currentYPosition - _previousYPosition;
+            _am.SetFloat("Direction", _Ydiff);
             //Input
             if (Time.timeScale > 0)
                 HandleInput();
@@ -247,28 +272,36 @@ public class Player : MonoBehaviour
                                                   _currentTime,
                                                   _jumpTime / 2.0f);
                 else if (transform.position.x >= _jumpToPosition.x - _grappleJumpOffset && !_failedToGrapple)
+                {
+                    if (_am.GetBool("Grapple"))
+                        _am.SetBool("Grapple", false);
                     newPosition = NewMovePosition(_fase3param,
                                                   new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0),
                                                   _jumpToPosition,
                                                   _currentTime - (_jumpTime + (_jumpTime / 2.0f)),
                                                   _jumpTime / 2.0f);
+                    if (_canGrapple)
+                        _canGrapple = false;
+                }
                 else if (!_failedToGrapple)
                 {
                     _failedToGrapple = true;
-                    for (uint i = 0; i < 5; ++i)
+                    for (uint i = 0; i < 2; ++i)
                     {
-                        if (_tap[i])
+                        if (_tap[i] && _canGrapple)
                         {
+                            if (!_am.GetBool("Grapple"))
+                                _am.SetBool("Grapple", true);
                             newPosition = NewMovePosition(_fase2param,
                               new Vector3(_jumpFromPosition.x + _grappleJumpOffset, _jumpHeight, 0),
                               new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0),
                               _currentTime - (_jumpTime / 2.0f),
                               _jumpTime);
                             _failedToGrapple = false;
-                            
+
                         }
                     }
-                }                    
+                }
                 if (!_failedToGrapple)
                 {
                     _rb.MovePosition(newPosition);
@@ -296,14 +329,7 @@ public class Player : MonoBehaviour
 
     private void ThrowShurikan()
     {
-        AudioManager.instance.PlaySoundEffect("ThrowShurikan");
-        Vector3 playerPosition = _camera.WorldToScreenPoint(transform.position);
-        Vector2 throwDirection = new Vector2(_endTouches[_index].x - playerPosition.y, _endTouches[_index].y - playerPosition.y).normalized;
-        GameObject shurikan = Instantiate(_shurikan);
-        shurikan.transform.position = transform.position + (new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMult);
-        shurikan.GetComponent<Throwable>().SetDirection(throwDirection);
-        shurikan.GetComponent<Throwable>().InstantKill = InstaKillPU;
-        shurikan.GetComponent<Throwable>().SuperBreakerActive = SuperBreakerPU;
+        ThrowShurikan(_index);
     }
 
 
@@ -316,7 +342,7 @@ public class Player : MonoBehaviour
 
     private void CheckThrow(int idx)
     {
-        if (Vector2.Distance(_startTouches[idx], _endTouches[idx]) > _minDistanceForSwipe && !_wasResumedPressed)
+        if (Vector2.Distance(_startTouches[idx], _endTouches[idx]) > _minDistanceForSwipe && !_wasGamePaused)
         {
             if (TrippleShotPU)
             {
@@ -328,7 +354,7 @@ public class Player : MonoBehaviour
             else
                 ThrowShurikan(idx);
         }
-        _wasResumedPressed = false;
+        _wasGamePaused = false;
     }
 
     private void HandleInput()
@@ -336,8 +362,8 @@ public class Player : MonoBehaviour
         if (Input.touchCount > 0)
         {
             int touchCount = Input.touchCount;
-            if (touchCount > 5)
-                touchCount = 5;
+            if (touchCount > 2)
+                touchCount = 2;
             for (int i = 0; i < touchCount; ++i)
             {
                 Touch current = Input.touches[i];
@@ -354,6 +380,9 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        else if (!_canGrapple)
+            _canGrapple = true;
+
         //if (Input.GetMouseButtonDown(0))
         //{
         //    _startTouches[0] = Input.mousePosition;
@@ -365,5 +394,29 @@ public class Player : MonoBehaviour
         //    _tap[0] = false;
         //    CheckThrow(0);
         //}
+    }
+
+
+
+    //WATCH AD TO CONTINUE***********************************************
+    //*******************************************************************
+    public float GetJumpTime()
+    {
+        return _jumpTime;
+    }
+
+    public void SetJumpTime(float value)
+    {
+        _jumpTime = value;
+    }
+
+    public uint GetScore()
+    {
+        return _score;
+    }
+
+    public void SetScore(uint value)
+    {
+        _score = value;
     }
 }

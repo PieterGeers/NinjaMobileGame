@@ -17,8 +17,9 @@ public class InstaKillPU : MonoBehaviour
 
     private void Pickup(Player player)
     {
-        player.InstaKillPU = true;
+        AudioManager.instance.PlaySoundEffect("PowerUp");
 
+        player.InstaKillPU = true;
         GetComponent<CircleCollider2D>().enabled = false;
         GetComponent<SpriteRenderer>().enabled = false;
         

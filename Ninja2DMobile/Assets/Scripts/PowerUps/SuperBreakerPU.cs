@@ -20,6 +20,8 @@ public class SuperBreakerPU : MonoBehaviour
 
     private void Pickup(Player player)
     {
+        AudioManager.instance.PlaySoundEffect("PowerUp");
+
         player.SuperBreakerPU = true;
         _player = player;
 

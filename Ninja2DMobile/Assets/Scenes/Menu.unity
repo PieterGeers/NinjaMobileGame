@@ -1397,6 +1397,18 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: PowerUp
+    clip: {fileID: 8300000, guid: 9b41013b75e4b3e4f8b96957cee7e8c5, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Stone
+    clip: {fileID: 8300000, guid: 64b5378551b0cd248a62fd909b597ec6, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
   songs:
   - name: MainMenu
     clip: {fileID: 8300000, guid: 3dea3a005ff8eb2488a1a10544328221, type: 3}

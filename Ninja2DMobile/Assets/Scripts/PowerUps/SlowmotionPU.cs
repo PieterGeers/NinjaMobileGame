@@ -19,6 +19,7 @@ public class SlowmotionPU : MonoBehaviour
 
     private void Pickup()
     {
+        AudioManager.instance.PlaySoundEffect("PowerUp");
 
         Time.timeScale = 0.5f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
