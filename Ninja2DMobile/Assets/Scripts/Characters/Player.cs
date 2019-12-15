@@ -46,29 +46,25 @@ public class Player : MonoBehaviour
     private Vector3 _fase3param = Vector3.zero;
     private Vector3 _jumpFromPosition = Vector3.zero;
     private Vector3 _jumpToPosition = Vector3.zero;
-    private Vector3[] _startTouches = new Vector3[2];
-    private Vector3[] _endTouches = new Vector3[2];
-    private bool[] _tap = new bool[2] { false, false };
-
+    private Vector3 _previous = Vector3.zero;
+    private Vector3[] _touch = new Vector3[2];
+    
     private int _index = 0;
-    private int _staticValue = 10;
 
     private uint _score = 0;
 
     private bool _start = false;
     private bool _isGrappling = false;
-    private bool _canGrapple = true;
+    private bool _canChangeGrappleState = true;
     private bool _failedToGrapple = false;
     private bool _wasGamePaused = false;
+    private bool[] _tap = new bool[2] { false, false };
 
-    private float _minDistanceForSwipe = 75f;
     private float _currentTime = 0f;
     private float _maxSpeed = 0.5f;
     private float _speedIncrease = 0.1f;
-    private float _previousYPosition = 0f;
-    private float _currentYPosition = 0f;
-    private float _Ydiff = 0f;
-
+    private float[] _tapTime = new float[2] { 0f, 0f};
+    private float _minHoldTime = 0.2f;
 
     private Vector3 QuadraticParametersFromPoints(Vector2 p1, Vector2 p2, Vector2 p3) //chronologic points
     {
@@ -231,7 +227,6 @@ public class Player : MonoBehaviour
         _am = gameObject.GetComponent<Animator>();
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        _currentYPosition = transform.position.y + _staticValue;
     }
 
     private Vector3 NewMovePosition(Vector3 param, Vector3 frompos, Vector3 topos, float currenttime, float time)
@@ -246,15 +241,18 @@ public class Player : MonoBehaviour
         if (_start)
         {
             //Animator update
-            _previousYPosition = _currentYPosition;
-            _currentYPosition = transform.position.y + _staticValue;
-            _Ydiff = _currentYPosition - _previousYPosition;
-            _am.SetFloat("Direction", _Ydiff);
+            Vector3 current = transform.position;
+            Vector3 diff = current - _previous;
+            _am.SetFloat("Direction", diff.y);
+            _previous = current;
+
             //Input
             if (Time.timeScale > 0)
                 HandleInput();
+
             //Time update
             _currentTime += Time.deltaTime;
+
             //Normal jump position update
             if (!_isGrappling)
             {
@@ -265,52 +263,48 @@ public class Player : MonoBehaviour
             else
             {
                 Vector3 newPosition = Vector3.zero;
+                //Section 1
                 if (transform.position.x < _jumpFromPosition.x + _grappleJumpOffset)
-                    newPosition = NewMovePosition(_fase1param,
-                                                  _jumpFromPosition,
-                                                  new Vector3(_jumpFromPosition.x + _grappleJumpOffset, _jumpHeight, 0),
-                                                  _currentTime,
-                                                  _jumpTime / 2.0f);
+                {
+                    newPosition = NewMovePosition(_fase1param, _jumpFromPosition, new Vector3(_jumpFromPosition.x + _grappleJumpOffset, _jumpHeight, 0), _currentTime, _jumpTime / 2.0f);
+                    _rb.MovePosition(newPosition);
+
+                    //check so that the player cant infinite hold 1 finger on screen to grapple
+                    if (!_canChangeGrappleState)
+                        _canChangeGrappleState = true;
+                }
+                //Section 3
                 else if (transform.position.x >= _jumpToPosition.x - _grappleJumpOffset && !_failedToGrapple)
                 {
+                    StopDrawLineWhileGrapple();
+
                     if (_am.GetBool("Grapple"))
                         _am.SetBool("Grapple", false);
-                    newPosition = NewMovePosition(_fase3param,
-                                                  new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0),
-                                                  _jumpToPosition,
-                                                  _currentTime - (_jumpTime + (_jumpTime / 2.0f)),
-                                                  _jumpTime / 2.0f);
-                    if (_canGrapple)
-                        _canGrapple = false;
-                }
-                else if (!_failedToGrapple)
-                {
-                    _failedToGrapple = true;
-                    for (uint i = 0; i < 2; ++i)
-                    {
-                        if (_tap[i] && _canGrapple)
-                        {
-                            if (!_am.GetBool("Grapple"))
-                                _am.SetBool("Grapple", true);
-                            newPosition = NewMovePosition(_fase2param,
-                              new Vector3(_jumpFromPosition.x + _grappleJumpOffset, _jumpHeight, 0),
-                              new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0),
-                              _currentTime - (_jumpTime / 2.0f),
-                              _jumpTime);
-                            _failedToGrapple = false;
 
-                        }
+                    newPosition = NewMovePosition(_fase3param, new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0), _jumpToPosition, _currentTime - (_jumpTime + (_jumpTime / 2.0f)), _jumpTime / 2.0f);
+                    _rb.MovePosition(newPosition);
+                }
+                //Section 2
+                else if (_tap[0] || _tap[1])
+                {
+                    if (!_failedToGrapple)
+                    {
+                        //set animation
+                        if (!_am.GetBool("Grapple"))
+                            _am.SetBool("Grapple", true);
+
+                        //calculate new position
+                        newPosition = NewMovePosition(_fase2param, new Vector3(_jumpFromPosition.x + _grappleJumpOffset, _jumpHeight, 0), new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0), _currentTime - (_jumpTime / 2.0f), _jumpTime);
+
+                        //move to new position
+                        _rb.MovePosition(newPosition);
+
+                        //Draw grapple line 
+                        DrawLineWhileGrapple();
                     }
                 }
-                if (!_failedToGrapple)
-                {
-                    _rb.MovePosition(newPosition);
-                    if (transform.position.x > _jumpFromPosition.x + _grappleJumpOffset &&
-                        transform.position.x <= _jumpToPosition.x - _grappleJumpOffset)
-                        DrawLineWhileGrapple();
-                    else if (transform.position.x > _jumpToPosition.x - _grappleJumpOffset)
-                        StopDrawLineWhileGrapple();
-                }
+                else
+                    _failedToGrapple = true;
             }
         }
     }
@@ -319,7 +313,7 @@ public class Player : MonoBehaviour
     {
         AudioManager.instance.PlaySoundEffect("ThrowShurikan");
         Vector3 playerPosition = _camera.WorldToScreenPoint(transform.position);
-        Vector2 throwDirection = new Vector2(_endTouches[idx].x - playerPosition.y, _endTouches[idx].y - playerPosition.y).normalized;
+        Vector2 throwDirection = new Vector2(_touch[idx].x - playerPosition.y, _touch[idx].y - playerPosition.y).normalized;
         GameObject shurikan = Instantiate(_shurikan);
         shurikan.transform.position = transform.position + (new Vector3(throwDirection.x, throwDirection.y, 0f) * _shurikanOffsetMult);
         shurikan.GetComponent<Throwable>().SetDirection(throwDirection);
@@ -342,7 +336,7 @@ public class Player : MonoBehaviour
 
     private void CheckThrow(int idx)
     {
-        if (Vector2.Distance(_startTouches[idx], _endTouches[idx]) > _minDistanceForSwipe && !_wasGamePaused)
+        if (_tapTime[idx] < _minHoldTime && !_wasGamePaused)
         {
             if (TrippleShotPU)
             {
@@ -367,33 +361,36 @@ public class Player : MonoBehaviour
             for (int i = 0; i < touchCount; ++i)
             {
                 Touch current = Input.touches[i];
-                if (current.phase == TouchPhase.Began)
+                if (current.fingerId >= 2)
+                    continue;
+                switch (current.phase)
                 {
-                    _startTouches[current.fingerId] = Input.touches[i].position;
-                    _tap[current.fingerId] = true;
-                }
-                else if (current.phase == TouchPhase.Ended || current.phase == TouchPhase.Canceled)
-                {
-                    _endTouches[current.fingerId] = Input.touches[i].position;
-                    _tap[current.fingerId] = false;
-                    CheckThrow(current.fingerId);
+                    case TouchPhase.Began:
+                        _tap[current.fingerId] = true;
+                        break;
+                    case TouchPhase.Moved:
+                        _tapTime[current.fingerId] += current.deltaTime;
+                        break;
+                    case TouchPhase.Stationary:
+                        _tapTime[current.fingerId] += current.deltaTime;
+                        break;
+                    case TouchPhase.Ended:
+                        EndTouch(i, current);
+                        break;
+                    case TouchPhase.Canceled:
+                        EndTouch(i, current);
+                        break;
                 }
             }
         }
-        else if (!_canGrapple)
-            _canGrapple = true;
+    }
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    _startTouches[0] = Input.mousePosition;
-        //    _tap[0] = true;
-        //}
-        //else if (Input.GetMouseButtonUp(0))
-        //{
-        //    _endTouches[0] = Input.mousePosition;
-        //    _tap[0] = false;
-        //    CheckThrow(0);
-        //}
+    private void EndTouch(int i, Touch current)
+    {
+        _touch[current.fingerId] = Input.touches[i].position;
+        _tap[current.fingerId] = false;
+        CheckThrow(current.fingerId);
+        _tapTime[current.fingerId] = 0.0f;
     }
 
 

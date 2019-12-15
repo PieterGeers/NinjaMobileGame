@@ -49,9 +49,4 @@ public class Menu : MonoBehaviour
         AudioManager.instance.PlaySoundEffect("PlayButton");
         SceneManager.LoadScene("Landscape");
     }
-
-    public void TestClick()
-    {
-        Debug.Log("click");
-    }
 }

@@ -5,11 +5,10 @@ using UnityEngine;
 public class Throwable : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 5.0f;
+    private float _speed = 1100.0f;
     [SerializeField]
     private float _timeToDestroy = 10.0f;
 
-    private Vector2 _direction = Vector2.zero;
     private Rigidbody2D _rb = null;
 
     public bool SuperBreakerActive = false;
@@ -23,7 +22,6 @@ public class Throwable : MonoBehaviour
     /*Function SetDirection sets the travel direction and starts the movement of the shurikan*/
     public void SetDirection(Vector2 direction)
     {
-         _direction = direction;
          _rb.AddForce(direction * _speed);
          _rb.AddTorque(10);
 

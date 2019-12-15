@@ -104,7 +104,6 @@ public class AdManager : MonoBehaviour
 
     public void IncreaseTimesPlayed()
     {
-        Debug.Log("increase times played");
         ++_timesPlayed;
         HasWatchedAd = false;
         Player player = FindObjectOfType<Player>().GetComponent<Player>();

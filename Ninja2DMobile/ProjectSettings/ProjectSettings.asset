@@ -121,7 +121,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.01
+  bundleVersion: 1.06
   preloadedAssets:
   - {fileID: 4408186290193548927, guid: 0873d56d82ad44e47a88ef5d8fc5372d, type: 3}
   - {fileID: 8833258301987939752, guid: 5fdca235fd3417e4583ae3c45db29805, type: 3}
@@ -171,7 +171,7 @@ PlayerSettings:
     Android: com.n3xtlevel.ninjajump
     Standalone: com.Company.ProductName
   buildNumber: {}
-  AndroidBundleVersionCode: 2
+  AndroidBundleVersionCode: 3
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
