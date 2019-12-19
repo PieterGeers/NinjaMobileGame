@@ -8,7 +8,7 @@ public static class SaveSystem
     public static void SaveHighScores(HighscoresScript highscores)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/highscores.fy";
+        string path = Application.persistentDataPath + "/highscores.jn";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         HighscoresData data = new HighscoresData(highscores);
@@ -18,10 +18,9 @@ public static class SaveSystem
         stream.Close();
     }
 
-
     public static HighscoresData LoadHighScores()
     {
-        string path = Application.persistentDataPath + "/highscores.fy";
+        string path = Application.persistentDataPath + "/highscores.jn";
 
         if (File.Exists(path))
         {
@@ -43,7 +42,7 @@ public static class SaveSystem
     public static void SaveAudioSettings(AudioManager manager)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/settings.fy";
+        string path = Application.persistentDataPath + "/settings.jn";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         SoundData data = new SoundData(manager);
@@ -55,7 +54,7 @@ public static class SaveSystem
 
     public static SoundData LoadAudioSettings()
     {
-        string path = Application.persistentDataPath + "/settings.fy";
+        string path = Application.persistentDataPath + "/settings.jn";
 
         if (File.Exists(path))
         {
@@ -73,4 +72,39 @@ public static class SaveSystem
             return null;
         }
     }
+
+    public static void SaveTutorial(bool value)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/tutorial.jn";
+        FileStream stream = new FileStream(path, FileMode.Create);
+
+        TutorialData data = new TutorialData(value);
+
+        formatter.Serialize(stream, data);
+
+        stream.Close();
+    }
+
+    public static TutorialData LoadTutorial()
+    {
+        string path = Application.persistentDataPath + "/tutorial.jn";
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            TutorialData data = formatter.Deserialize(stream) as TutorialData;
+
+            stream.Close();
+
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

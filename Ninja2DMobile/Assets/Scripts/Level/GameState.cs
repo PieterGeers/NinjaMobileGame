@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +6,7 @@ public class GameState : MonoBehaviour
 {
     private void Start()
     {
-        if (!AudioManager.instance.IsSongPlaying("GamePlay"))
+        if (AudioManager.instance != null && !AudioManager.instance.IsSongPlaying("GamePlay"))
         {
             AudioManager.instance.StopSong("MainMenu");
             AudioManager.instance.PlaySong("GamePlay");

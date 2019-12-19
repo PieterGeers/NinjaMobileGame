@@ -94,6 +94,10 @@
     <Compile Include="Assets\Scripts\Saving\HighscoresData.cs" />
     <Compile Include="Assets\Scripts\Saving\SaveSystem.cs" />
     <Compile Include="Assets\Scripts\Saving\SoundData.cs" />
+    <Compile Include="Assets\Scripts\Saving\TutorialData.cs" />
+    <Compile Include="Assets\Scripts\Tutorial\PlayerTutorial.cs" />
+    <Compile Include="Assets\Scripts\Tutorial\PoleManagerTutorial.cs" />
+    <Compile Include="Assets\Scripts\Tutorial\TutorialManager.cs" />
     <None Include="Assets\Shader\Blur.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />

@@ -47,6 +47,9 @@ public class Menu : MonoBehaviour
     public void PlayGame()
     {
         AudioManager.instance.PlaySoundEffect("PlayButton");
-        SceneManager.LoadScene("Landscape");
+        if (SaveSystem.LoadTutorial() == null)
+            SceneManager.LoadScene(2);
+        else
+            SceneManager.LoadScene(1);
     }
 }

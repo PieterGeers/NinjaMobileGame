@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3890231671894755160}
   - component: {fileID: 3890231671894755167}
+  - component: {fileID: 1661642717963160870}
   m_Layer: 0
   m_Name: PoleSpawner
   m_TagString: Untagged
@@ -43,17 +44,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e04271336e36fb14889a723c05db5286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxDistance: 5
-  _height: 1
-  _startPositionX: -6
-  _initAmountOfPoles: 4
-  _destroyTime: 15
-  _chanceForDestroyable: {x: 0, y: 50}
-  _chanceForGrappling: {x: 80, y: 100}
-  _poleReference: {fileID: 6509329691343977839, guid: a35a918e1818ee54b826f1ac07132cbd,
+  _poleInterval: 5
+  _randomSpawnHeight: 1
+  _nbOfPoles: 10
+  _obstacleChance: {x: 0, y: 50}
+  _grappleChance: {x: 80, y: 100}
+  _pole: {fileID: 0}
+  _grapplePole: {fileID: 0}
+--- !u!114 &1661642717963160870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3890231671894755166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe4f6f943c74b424ba5660f772d1853f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _SlowMotionImage: {fileID: 21300000, guid: d5eba58851bf23649a3c3f1a5a6f950f, type: 3}
+  _SuperBreakerImage: {fileID: 21300000, guid: 4eb97407c643dfc4f9551f4f6dbc213f, type: 3}
+  _InstaKillImage: {fileID: 21300000, guid: 6d78da8f0d25e68478fe61ac17c03486, type: 3}
+  _TripleShotImage: {fileID: 21300000, guid: 72a4220f2f7f4274887766253d6b0ef6, type: 3}
+  _genericPowerUP: {fileID: 3656171725150651533, guid: ab28d6af28103de4cab2ec5cd85dd96c,
     type: 3}
-  _destroyablePoleReference: {fileID: 6205215210083957198, guid: 1fbd958a750301149a825e4b6d2641aa,
-    type: 3}
-  _grapplingPoleReference: {fileID: 8277147274897460722, guid: dece679be6a164447babe1be78d10e4d,
-    type: 3}
-  _polesOnScreen: []
+  _SlowMotionImageUI: {fileID: 0}
+  _SuperBreakerImageUI: {fileID: 0}
+  _InstaKillImageUI: {fileID: 0}
+  _TripleShotImageUI: {fileID: 0}
