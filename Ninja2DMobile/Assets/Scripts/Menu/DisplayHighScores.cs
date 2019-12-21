@@ -6,7 +6,7 @@ using UnityEngine;
 public class DisplayHighScores : MonoBehaviour
 {
     [SerializeField]
-    private Text _text = null;
+    private Text[] _text = new Text[5];
 
     public void Display()
     {
@@ -14,11 +14,19 @@ public class DisplayHighScores : MonoBehaviour
         if (data != null)
         {
             int[] highscores = data.HighScores;
-            _text.text = "Highscores\n";
-            foreach (var item in highscores)
+            for (int i = 0; i < 5; i++)
             {
-                _text.text += "\n" + item;
+                _text[i].text = highscores[i].ToString();
             }
         }
+    }
+
+    public void ShowGlobalHighScores()
+    {
+        HighscoresData data = SaveSystem.LoadHighScores();
+        if (data == null)
+            OnlineHighScores.ShowOnlineHighScores(0);
+        else
+            OnlineHighScores.ShowOnlineHighScores(data.HighScores[0]);
     }
 }

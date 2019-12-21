@@ -46,6 +46,8 @@ public class HighscoresScript : MonoBehaviour
                 _highscores[i + 1] = _highscores[i];
             }
             _highscores[0] = (int)score;
+            if (OnlineHighScores.IsAuthenticated)
+                OnlineHighScores.AddItemToHighScore((int)score);
             SaveHighScores();
             return true;
         }   

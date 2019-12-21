@@ -55,7 +55,8 @@ public class Player : MonoBehaviour
 
     private bool _start = false;
     private bool _isGrappling = false;
-    private bool _canChangeGrappleState = true;
+    private bool _canGrapple = true;
+    private bool _setFalseOnce = true;
     private bool _failedToGrapple = false;
     private bool _wasGamePaused = false;
     private bool[] _tap = new bool[2] { false, false };
@@ -270,8 +271,6 @@ public class Player : MonoBehaviour
                     _rb.MovePosition(newPosition);
 
                     //check so that the player cant infinite hold 1 finger on screen to grapple
-                    if (!_canChangeGrappleState)
-                        _canChangeGrappleState = true;
                 }
                 //Section 3
                 else if (transform.position.x >= _jumpToPosition.x - _grappleJumpOffset && !_failedToGrapple)
@@ -281,17 +280,26 @@ public class Player : MonoBehaviour
                     if (_am.GetBool("Grapple"))
                         _am.SetBool("Grapple", false);
 
+                    if (_setFalseOnce)
+                    {
+                        _setFalseOnce = false;
+                        _canGrapple = false;
+                    }
+
                     newPosition = NewMovePosition(_fase3param, new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0), _jumpToPosition, _currentTime - (_jumpTime + (_jumpTime / 2.0f)), _jumpTime / 2.0f);
                     _rb.MovePosition(newPosition);
                 }
                 //Section 2
-                else if (_tap[0] || _tap[1])
+                else if ((_tap[0] || _tap[1]) && _canGrapple)
                 {
                     if (!_failedToGrapple)
                     {
                         //set animation
                         if (!_am.GetBool("Grapple"))
                             _am.SetBool("Grapple", true);
+
+                        if (!_setFalseOnce)
+                            _setFalseOnce = true;
 
                         //calculate new position
                         newPosition = NewMovePosition(_fase2param, new Vector3(_jumpFromPosition.x + _grappleJumpOffset, _jumpHeight, 0), new Vector3(_jumpToPosition.x - _grappleJumpOffset, _jumpHeight, 0), _currentTime - (_jumpTime / 2.0f), _jumpTime);
@@ -306,6 +314,10 @@ public class Player : MonoBehaviour
                 else
                     _failedToGrapple = true;
             }
+        }
+        if (!_tap[0] && !_tap[1] && !_canGrapple)
+        {
+            _canGrapple = true;
         }
     }
 
@@ -348,7 +360,11 @@ public class Player : MonoBehaviour
             else
                 ThrowShurikan(idx);
         }
-        _wasGamePaused = false;
+        else
+        {
+            _wasGamePaused = false;
+        }
+        _tapTime[idx] = 0.0f;
     }
 
     private void HandleInput()
@@ -369,10 +385,8 @@ public class Player : MonoBehaviour
                         _tap[current.fingerId] = true;
                         break;
                     case TouchPhase.Moved:
-                        _tapTime[current.fingerId] += current.deltaTime;
                         break;
                     case TouchPhase.Stationary:
-                        _tapTime[current.fingerId] += current.deltaTime;
                         break;
                     case TouchPhase.Ended:
                         EndTouch(i, current);
@@ -383,6 +397,11 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        for (int i = 0; i < _tap.Length; i++)
+        {
+            if (_tap[i])
+                _tapTime[i] += Time.deltaTime;
+        }
     }
 
     private void EndTouch(int i, Touch current)
@@ -390,7 +409,6 @@ public class Player : MonoBehaviour
         _touch[current.fingerId] = Input.touches[i].position;
         _tap[current.fingerId] = false;
         CheckThrow(current.fingerId);
-        _tapTime[current.fingerId] = 0.0f;
     }
 
 
